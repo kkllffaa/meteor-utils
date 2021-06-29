@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "meteor_tweaks",
+  "version": "${version}",
+  "name": "meteor tweaks",
+  "description": "adds some modules to meteor client",
+  "authors": [
+    "franek"
+  ],
+  "icon": "assets/template/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "com.franek.meteor_tweaks.Addon"
+    ]
+  },
+  "mixins": [
+    "meteor_tweaks.mixins.json"
+  ],
+  "depends": {
+    "java": ">=16",
+    "minecraft": ">=1.16",
+    "meteor-client": ">0.4.3"
+  }
+}

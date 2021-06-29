@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "com.franek.meteor_tweaks.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "client": [
+    "MiddleClickExtraNotInInv",
+    "ChatFilterMixin",
+    "Debil"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
