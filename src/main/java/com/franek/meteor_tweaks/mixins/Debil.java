@@ -25,6 +25,6 @@ public abstract class Debil {
     @Inject(method = "<init>",at = @At("TAIL"),remap = false)
     private void init(RunArgs args, CallbackInfo ci){
         LOGGER.info("debil");
-        isDemo = false;
+        //isDemo = true;
     }
 }

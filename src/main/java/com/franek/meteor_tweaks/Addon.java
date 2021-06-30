@@ -24,7 +24,6 @@ public class Addon extends MeteorAddon {
 		Commands.get().add(new Test());
 
 		// Modules
-        Modules.get().add(new ChatFilter());
         Modules.get().add(new Strefe());
 
 	}
