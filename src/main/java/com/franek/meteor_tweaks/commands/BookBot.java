@@ -106,7 +106,7 @@ public class BookBot extends Command {
     }
 
 
-    public enum Mode{
+    private enum Mode{
         Hand,
         Hotbar,
         All,

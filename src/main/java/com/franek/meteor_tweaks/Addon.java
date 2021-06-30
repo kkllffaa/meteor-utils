@@ -24,7 +24,9 @@ public class Addon extends MeteorAddon {
 		Commands.get().add(new Test());
 
 		// Modules
-        Modules.get().add(new Strefe());
+        Modules.get().add(new Strafe());
+        Modules.get().add(new ThirdHand());
+        Modules.get().add(new Ble());
 
 	}
 }
