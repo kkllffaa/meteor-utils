@@ -5,6 +5,10 @@ build/
 out/
 classes/
 
+# exclude meteor jar
+
+!build/loom-cache/
+
 # eclipse
 
 *.launch
