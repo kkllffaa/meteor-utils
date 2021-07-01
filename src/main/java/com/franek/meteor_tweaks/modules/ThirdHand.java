@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
+import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 
 public class ThirdHand extends Module {
 	
@@ -61,11 +62,17 @@ public class ThirdHand extends Module {
 		.build()
 	);
 	
-	
 	private final Setting<Boolean> notify = sgGeneral.add(new BoolSetting.Builder()
-		.name("notify")
-		.description("Notifies you when you do not have the specified item in your hotbar.")
-		.defaultValue(true)
+			.name("notify")
+			.description("Notifies you when you do not have the specified item in your hotbar.")
+			.defaultValue(true)
+			.build()
+	);
+	
+	private final Setting<Boolean> airplace = sgGeneral.add(new BoolSetting.Builder()
+		.name("air place")
+		.description("Place blocks in air.")
+		.defaultValue(false)
 		.build()
 	);
 	
@@ -100,33 +107,37 @@ public class ThirdHand extends Module {
 		}else {
 			return;
 		}
-		int preSlot = mc.player.inventory.selectedSlot;
+		
 		
 		assert mc.world != null;
 		
 		
 		Block block = mc.world.getBlockState(hitResult.getBlockPos()).getBlock();
+		if (BlockUtils.isClickable(block)) return;
 		switch (itemstouse.get().type){
 			
 			case Interact -> {
-				if (BlockUtils.isClickable(block)) return;
 				
 				event.cancel();
+				
+				int preSlot = mc.player.inventory.selectedSlot;
 				InvUtils.swap(result.getSlot());
 				mc.interactionManager.interactItem(mc.player, mc.world, Hand.MAIN_HAND);
+				InvUtils.swap(preSlot);
 			}
 			case Place -> {
-				if (block == Blocks.AIR || block == Blocks.WATER || block == Blocks.LAVA || BlockUtils.isClickable(block)) return;
 				
-				event.cancel();
-				InvUtils.swap(result.getSlot());
-				mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, hitResult);
+				if (block == Blocks.AIR || block == Blocks.WATER || block == Blocks.LAVA){
+					if (airplace.get()){
+						event.cancel();
+						BlockUtils.place(hitResult.getBlockPos(),result,false,0,false,true);
+					}
+				}else {
+					event.cancel();
+					BlockUtils.place(hitResult.getBlockPos().offset(hitResult.getSide()),result,false,0,false,true);
+				}
+				
 			}
 		}
-		
-		
-		
-		InvUtils.swap(preSlot);
-		
 	}
 }

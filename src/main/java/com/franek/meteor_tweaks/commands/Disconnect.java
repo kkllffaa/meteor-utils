@@ -17,8 +17,8 @@ public class Disconnect extends Command {
 	@Override
 	public void build(LiteralArgumentBuilder<CommandSource> builder) {
 		builder.executes(context -> {
-		 
-		 
+			
+			
 			assert mc.player != null;
 			mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText("Disconnected via command")));
 			
