@@ -3,8 +3,7 @@
   "package": "com.franek.meteor_tweaks.mixins",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "MiddleClickExtraNotInInv",
-    "TextMixin"
+    "MiddleClickExtraNotInInv"
   ],
   "injectors": {
     "defaultRequire": 1

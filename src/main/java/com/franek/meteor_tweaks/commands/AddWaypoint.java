@@ -11,38 +11,32 @@ import net.minecraft.command.CommandSource;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class AddWaypoint extends Command {
-    public AddWaypoint(){super("add_waypoint","adds waypoint via command in actual coords");}
-
-    @Override
-    public void build(LiteralArgumentBuilder<CommandSource> builder) {
-        builder.then(argument("name", StringArgumentType.string()).executes(context -> {
-
-
-            Waypoint waypoint = new Waypoint() {{
-               name =  context.getArgument("name", String.class);
-               actualDimension = PlayerUtils.getDimension();
-               assert mc.player != null;
-               x = (int) mc.player.getX();
-               y = (int) mc.player.getY() + 2;
-               z = (int) mc.player.getZ();
-
-
-                switch (actualDimension) {
-                    case Overworld -> overworld = true;
-                    case Nether -> nether = true;
-                    case End -> end = true;
-                }
-
-            }};
-
-
-
-
-
-            Waypoints.get().add(waypoint);
-
-
-            return SINGLE_SUCCESS;
-        }));
-    }
+	public AddWaypoint(){super("add_waypoint","adds waypoint via command in actual coords");}
+	
+	@Override
+	public void build(LiteralArgumentBuilder<CommandSource> builder) {
+		builder.then(argument("name", StringArgumentType.string()).executes(context -> {
+			
+			Waypoint waypoint = new Waypoint() {{
+				name =  context.getArgument("name", String.class);
+				actualDimension = PlayerUtils.getDimension();
+				assert mc.player != null;
+				
+				x = (int) mc.player.getX();
+				y = (int) mc.player.getY() + 2;
+				z = (int) mc.player.getZ();
+				
+				switch (actualDimension) {
+					case Overworld -> overworld = true;
+					case Nether -> nether = true;
+					case End -> end = true;
+				}
+				
+			}};
+			
+			Waypoints.get().add(waypoint);
+			
+			return SINGLE_SUCCESS;
+		}));
+	}
 }

@@ -2,6 +2,9 @@ package com.franek.meteor_tweaks.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import minegame159.meteorclient.systems.commands.Command;
+import minegame159.meteorclient.systems.commands.Commands;
+import minegame159.meteorclient.systems.macros.Macro;
+import minegame159.meteorclient.systems.macros.Macros;
 import net.minecraft.command.CommandSource;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
@@ -18,7 +21,8 @@ public class Test extends Command {
         builder.executes(context -> {
 
 
-            info(String.valueOf(mc.isDemo()));
+
+
 
             return SINGLE_SUCCESS;
         });
