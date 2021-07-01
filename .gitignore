@@ -2,10 +2,12 @@
 
 .gradle/
 build/*
-!build/
-!build/loom-cache
 out/
 classes/
+
+#exclude loom_cache
+
+!build/loom-cache
 
 
 # eclipse
