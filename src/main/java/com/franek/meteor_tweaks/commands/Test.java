@@ -10,23 +10,23 @@ import net.minecraft.command.CommandSource;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class Test extends Command {
-    public Test() {
-        super("Test", "description");
-    }
-
-    @Override
-    public void build(LiteralArgumentBuilder<CommandSource> builder) {
-
-
-        builder.executes(context -> {
-
-
-
-
-
-            return SINGLE_SUCCESS;
-        });
-
-
-    }
+	public Test() {
+		super("Test", "description");
+	}
+	
+	@Override
+	public void build(LiteralArgumentBuilder<CommandSource> builder) {
+		
+		
+		builder.executes(context -> {
+			
+			
+			info("test");
+			
+			
+			return SINGLE_SUCCESS;
+		});
+		
+		
+	}
 }

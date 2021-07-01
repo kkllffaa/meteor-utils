@@ -10,11 +10,11 @@ import net.minecraft.util.Hand;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT;
 
 public class Ble extends Module {
-
-    public Ble() {
-        super(Categories.Player, "Ble", "");
-    }
-
-
-
+ 
+	public Ble() {
+		super(Categories.Player, "Ble", "");
+	}
+	
+	
+	
 }

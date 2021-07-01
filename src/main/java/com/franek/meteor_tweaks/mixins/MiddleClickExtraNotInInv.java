@@ -12,8 +12,8 @@ import static minegame159.meteorclient.utils.Utils.mc;
 
 @Mixin(MiddleClickExtra.class)
 public abstract class MiddleClickExtraNotInInv {
-    @Inject(method = "onMouseButton", at = @At("HEAD"),remap = false, cancellable = true)
-    private void debil(MouseButtonEvent event, CallbackInfo ci){
-        if (mc.currentScreen != null) ci.cancel();
-    }
+	@Inject(method = "onMouseButton", at = @At("HEAD"),remap = false, cancellable = true)
+	private void debil(MouseButtonEvent event, CallbackInfo ci){
+		if (mc.currentScreen != null) ci.cancel();
+	}
 }
