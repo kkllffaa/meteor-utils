@@ -3,7 +3,8 @@
   "package": "com.franek.meteor_tweaks.mixins",
   "compatibilityLevel": "JAVA_16",
   "client": [
-    "MiddleClickExtraNotInInv"
+    "MiddleClickExtraNotInInv",
+    "AirPlaceAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
