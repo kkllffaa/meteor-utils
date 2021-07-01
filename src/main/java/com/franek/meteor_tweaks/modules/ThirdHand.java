@@ -159,17 +159,6 @@ public class ThirdHand extends Module {
 					InvUtils.swap(result.getSlot());
 					mc.interactionManager.interactBlock(mc.player,mc.world,Hand.MAIN_HAND,hitResult);
 					InvUtils.swap(preSlot);
-					
-					/*
-					if (blockState.getMaterial().isReplaceable()){
-						event.cancel();
-						BlockUtils.place(hitResult.getBlockPos(),result,false,0,false,true);
-					}else {
-						event.cancel();
-						BlockUtils.place(hitResult.getBlockPos().offset(hitResult.getSide()),result,false,0,false,true);
-					}
-					
-					 */
 				}
 			}
 			case Onblock -> {
