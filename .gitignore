@@ -1,13 +1,13 @@
 # gradle
 
 .gradle/
-build/
+build/*
+!build/
+!build/loom-cache
+build/generated/
 out/
 classes/
 
-# exclude meteor jar
-
-!build/loom-cache/
 
 # eclipse
 
