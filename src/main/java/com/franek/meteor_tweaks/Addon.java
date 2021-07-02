@@ -1,7 +1,7 @@
 package com.franek.meteor_tweaks;
 
 import com.franek.meteor_tweaks.commands.*;
-import com.franek.meteor_tweaks.hud.BaritoneProcess;
+import com.franek.meteor_tweaks.hud.*;
 import com.franek.meteor_tweaks.modules.*;
 import minegame159.meteorclient.MeteorAddon;
 import minegame159.meteorclient.systems.commands.Commands;
