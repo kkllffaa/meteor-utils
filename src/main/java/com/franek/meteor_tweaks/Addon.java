@@ -28,6 +28,7 @@ public class Addon extends MeteorAddon {
 		// Modules
 		Modules.get().add(new Strafe());
 		Modules.get().add(new ThirdHand());
+		Modules.get().add(new NoPortalHitbox());
 		Modules.get().add(new Ble());
 		
 		//HUD

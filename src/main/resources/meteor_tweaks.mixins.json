@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_16",
   "client": [
     "MiddleClickExtraNotInInv",
-    "AirPlaceAccessor"
+    "AirPlaceAccessor",
+    "NoPortalHitboxMixin"
   ],
   "injectors": {
     "defaultRequire": 1
