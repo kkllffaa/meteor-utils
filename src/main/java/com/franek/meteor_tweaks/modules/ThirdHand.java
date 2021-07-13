@@ -15,9 +15,7 @@ import minegame159.meteorclient.utils.misc.input.KeyAction;
 import minegame159.meteorclient.utils.player.FindItemResult;
 import minegame159.meteorclient.utils.player.InvUtils;
 import minegame159.meteorclient.utils.world.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -56,7 +54,7 @@ public class ThirdHand extends Module {
 		}
 	}
 	
-	
+	//region settings
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	
 	private final Setting<List<Item>> useditem = sgGeneral.add(new ItemListSetting.Builder()
@@ -93,7 +91,7 @@ public class ThirdHand extends Module {
 			.defaultValue(true)
 			.build()
 	);
-	
+	//endregion
 	
 	public ThirdHand() {
 		super(Categories.Player, "Third Hand", "Uses specified item instead of other item.");
@@ -103,7 +101,7 @@ public class ThirdHand extends Module {
 	@EventHandler
 	private void onMouseButton(MouseButtonEvent event) {
 		if (event.action != KeyAction.Press || event.button != GLFW_MOUSE_BUTTON_RIGHT || mc.currentScreen != null) return;
-		assert mc.player != null;
+		//assert mc.player != null;
 		if (!useditem.get().contains(mc.player.getMainHandStack().getItem())) return;
 		FindItemResult result = InvUtils.findInHotbar(itemstouse.get().item);
 		
@@ -115,7 +113,7 @@ public class ThirdHand extends Module {
 		
 		BlockHitResult hitResult;
 		
-		assert mc.interactionManager != null;
+		//assert mc.interactionManager != null;
 		if (mc.crosshairTarget instanceof BlockHitResult){
 			hitResult = (BlockHitResult) mc.crosshairTarget;
 		}else {
@@ -123,7 +121,7 @@ public class ThirdHand extends Module {
 		}
 		
 		
-		assert mc.world != null;
+		//assert mc.world != null;
 		
 		
 		BlockState blockState = mc.world.getBlockState(hitResult.getBlockPos());
@@ -178,8 +176,8 @@ public class ThirdHand extends Module {
 	@EventHandler
 	private void onRender(RenderEvent event) {
 		if (!render.get()) return;
-		assert mc.world != null;
-		assert mc.crosshairTarget != null;
+		//assert mc.world != null;
+		//assert mc.crosshairTarget != null;
 		if (!(mc.crosshairTarget instanceof BlockHitResult)) return;
 		BlockState blockState = mc.world.getBlockState(((BlockHitResult) mc.crosshairTarget).getBlockPos());
 		

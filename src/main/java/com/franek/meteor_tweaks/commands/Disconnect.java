@@ -19,7 +19,7 @@ public class Disconnect extends Command {
 		builder.executes(context -> {
 			
 			
-			assert mc.player != null;
+			//assert mc.player != null;
 			mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(new LiteralText("Disconnected via command")));
 			
 			return SINGLE_SUCCESS;

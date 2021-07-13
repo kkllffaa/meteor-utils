@@ -205,7 +205,7 @@ public class BookBot extends Command {
 		}
 		
 		if (drop) {
-			assert mc.player != null;
+			//assert mc.player != null;
 			if (mc.player.getMainHandStack().getItem() == Items.WRITTEN_BOOK){
 				InvUtils.drop().slot(mc.player.inventory.selectedSlot);
 			}
@@ -328,7 +328,7 @@ public class BookBot extends Command {
 			if (endOfStream) break;
 		}
 		
-		assert mc.player != null;
+		//assert mc.player != null;
 		mc.player.getMainHandStack().putSubTag("pages", pages);
 		mc.player.getMainHandStack().putSubTag("author", NbtString.of(mc.player.getName().asString()));
 		mc.player.getMainHandStack().putSubTag("title", NbtString.of(name));

@@ -1,11 +1,10 @@
 package com.franek.meteor_tweaks;
 
 import com.franek.meteor_tweaks.commands.*;
-import com.franek.meteor_tweaks.hud.*;
 import com.franek.meteor_tweaks.modules.*;
+import com.franek.meteor_tweaks.hud.*;
 import minegame159.meteorclient.MeteorAddon;
 import minegame159.meteorclient.systems.commands.Commands;
-
 import minegame159.meteorclient.systems.modules.Modules;
 import minegame159.meteorclient.systems.modules.render.hud.HUD;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +33,7 @@ public class Addon extends MeteorAddon {
 		//HUD
 		HUD hud = Modules.get().get(HUD.class);
 		hud.elements.add(new BaritoneProcess(hud));
+		hud.elements.add(new ContainerPreview(hud));
 		
 	}
 }

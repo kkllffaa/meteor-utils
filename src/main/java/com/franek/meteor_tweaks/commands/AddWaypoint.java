@@ -20,7 +20,7 @@ public class AddWaypoint extends Command {
 			Waypoint waypoint = new Waypoint() {{
 				name =  context.getArgument("name", String.class);
 				actualDimension = PlayerUtils.getDimension();
-				assert mc.player != null;
+				//assert mc.player != null;
 				
 				x = (int) mc.player.getX();
 				y = (int) mc.player.getY() + 2;
