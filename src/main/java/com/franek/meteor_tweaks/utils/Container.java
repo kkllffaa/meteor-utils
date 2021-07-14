@@ -1,81 +1,61 @@
 package com.franek.meteor_tweaks.utils;
 
+import minegame159.meteorclient.utils.misc.ISerializable;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 
-import java.util.Arrays;
-
-public class Container {
+public class Container implements ISerializable<Container> {
 	
 	//public boolean isdouble;
 	public final ItemStack[] ITEMS;
-	public final Vec3i pos;
+	public final Type type;
 	
-	public Container(Type type , Vec3i pos){
-		this.pos = pos;
+	public Container(Type type){
+		if (type == null){
+			this.ITEMS = null;
+			this.type = null;
+			return;
+		}
 		this.ITEMS = new ItemStack[type.slots];
+		this.type = type;
 	}
-	public Container(int slots , Vec3i pos){
-		this.pos = pos;
-		this.ITEMS = new ItemStack[slots];
-	}
-	
 	
 	public enum Type{
-		SingleChest(27),
-		DoubleChest(27*2);
+		SingleChest(27, Items.CHEST),
+		DoubleChest(27*2, Items.CHEST);
 		
-		private final int slots;
+		public final int slots;
+		public final Item item;
 		
-		Type(int slots){
+		public static Type fromslots(int slots){
+			return slots <= Container.Type.SingleChest.slots ? Container.Type.SingleChest :
+					slots <= Container.Type.DoubleChest.slots ? Container.Type.DoubleChest : null;
+		}
+		
+		public int rows(){
+			return MathUtils.roundToBigger(slots/9.);
+		}
+		
+		
+		
+		Type(int slots, Item item){
 			this.slots = slots;
+			this.item = item;
 		}
 	}
 	
 	
-	//region coordsutils
-	public static Container getContainerfromVec(Vec3i pos, Container[][][][] containers){
-		try {
-			return containers[pos.getY()][getCoordSysFromPos(pos).get][Math.abs(pos.getX())][Math.abs(pos.getZ())];
-		}catch (IndexOutOfBoundsException e){
-			return null;
-		}
+	
+	@Override
+	public NbtCompound toTag() {
+		return null;
 	}
-	public static boolean setContainerfromVec(Vec3i pos, Container[][][][] containers, Container container){
-		try {
-			containers[pos.getY()][getCoordSysFromPos(pos).get][Math.abs(pos.getX())][Math.abs(pos.getZ())] = container;
-			return true;
-		}catch (IndexOutOfBoundsException e){
-			return false;
-		}
-	}
-	public enum ContainerCoordsSystem{
-		plusXplusZ(0),
-		plusXminusZ(1),
-		minusXplusZ(2),
-		minusXminuxZ(3);
+	
+	@Override
+	public Container fromTag(NbtCompound tag) {
 		
-		private final int get;
-		
-		ContainerCoordsSystem(int i) {
-			get = i;
-		}
+		return null;
 	}
-	public static ContainerCoordsSystem getCoordSysFromPos(Vec3i pos){
-		if (pos.getX() >= 0){
-			if (pos.getZ() >=0){
-				return ContainerCoordsSystem.plusXplusZ;
-			}else {
-				return ContainerCoordsSystem.plusXminusZ;
-			}
-		}else {
-			if (pos.getZ() >=0){
-				return ContainerCoordsSystem.minusXplusZ;
-			}else {
-				return ContainerCoordsSystem.minusXminuxZ;
-			}
-		}
-	}
-	//endregion
 }
