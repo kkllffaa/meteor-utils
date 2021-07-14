@@ -1,6 +1,5 @@
 package com.franek.meteor_tweaks.hud;
 
-import com.franek.meteor_tweaks.Addon;
 import com.franek.meteor_tweaks.utils.Container;
 import com.mojang.blaze3d.systems.RenderSystem;
 import meteordevelopment.orbit.EventHandler;
@@ -41,7 +40,7 @@ public class ContainerPreview extends HudElement {
 	
 	private static final Identifier TEXTURE = new Identifier("meteor-client", "textures/container.png");
 	private static final Identifier TEXTURE_TRANSPARENT = new Identifier("meteor-client", "textures/container-transparent.png");
-	ItemStack[] defaultstack = new ItemStack[27];
+	private final ItemStack[] defaultstack = new ItemStack[27];
 	
 	
 	//region settings

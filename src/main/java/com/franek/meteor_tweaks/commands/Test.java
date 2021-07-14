@@ -4,8 +4,6 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import minegame159.meteorclient.systems.commands.Command;
 import net.minecraft.command.CommandSource;
 
-import java.util.*;
-
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class Test extends Command {
@@ -19,7 +17,7 @@ public class Test extends Command {
 		
 		builder.executes(context -> {
 			
-
+			info("test");
 			
 			return SINGLE_SUCCESS;
 		});

@@ -22,6 +22,7 @@ public class Container implements ISerializable<Container> {
 		this.type = type;
 	}
 	
+	
 	public enum Type{
 		SingleChest(27, Items.CHEST),
 		DoubleChest(27*2, Items.CHEST);
