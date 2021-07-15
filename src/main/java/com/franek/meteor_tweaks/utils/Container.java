@@ -36,7 +36,7 @@ public class Container implements ISerializable<Container> {
 		}
 		
 		public int rows(){
-			return MathUtils.roundToBigger(slots/9.);
+			return MathUtils.roundToBigger(slots/9.0);
 		}
 		
 		
