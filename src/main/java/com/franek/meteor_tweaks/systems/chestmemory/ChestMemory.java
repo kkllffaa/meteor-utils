@@ -1,6 +1,5 @@
 package com.franek.meteor_tweaks.systems.chestmemory;
 
-import com.franek.meteor_tweaks.Addon;
 import com.franek.meteor_tweaks.utils.MathUtils;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
@@ -10,20 +9,22 @@ import minegame159.meteorclient.events.game.GameLeftEvent;
 import minegame159.meteorclient.events.game.OpenScreenEvent;
 import minegame159.meteorclient.events.world.BlockActivateEvent;
 import minegame159.meteorclient.systems.System;
-import minegame159.meteorclient.systems.Systems;
 import minegame159.meteorclient.systems.modules.Modules;
 import minegame159.meteorclient.systems.modules.render.hud.HUD;
 import minegame159.meteorclient.utils.Utils;
 import minegame159.meteorclient.utils.player.PlayerUtils;
 import minegame159.meteorclient.utils.world.Dimension;
-import net.minecraft.block.AbstractChestBlock;
-import net.minecraft.block.EnderChestBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ChestBlock;
+import net.minecraft.block.enums.ChestType;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.state.property.Properties;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import java.io.File;
@@ -53,10 +54,6 @@ public class ChestMemory extends System<ChestMemory> {
 		}
 	}
 	
-	public static ChestMemory getInstance() {
-		return Systems.get(ChestMemory.class);
-	}
-	
 	public static void set(Vec3i pos, ContainerC container) {
 		getactualdimContainerHashMap().put(pos, container);
 	}
@@ -77,7 +74,6 @@ public class ChestMemory extends System<ChestMemory> {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	private void onGameDosconnected(GameLeftEvent event) {
-		//todo sprawdzic czy zapisuje sie przy wyjsciu
 		for (@SuppressWarnings("rawtypes") Map map : containermaps){
 			map.clear();
 		}
@@ -93,7 +89,6 @@ public class ChestMemory extends System<ChestMemory> {
 	
 	
 	//region logic
-	//todo
 	private Vec3i pos;
 	private int openedstate;
 	
@@ -130,6 +125,11 @@ public class ChestMemory extends System<ChestMemory> {
 			return;
 		}
 		if (!(mc.currentScreen instanceof GenericContainerScreen)) return;
+		if (mc.world == null) {
+			openedstate = 0;
+			pos = null;
+			return;
+		}
 		GenericContainerScreenHandler container = ((GenericContainerScreen) mc.currentScreen).getScreenHandler();
 		
 		if (container == null) {
@@ -137,33 +137,58 @@ public class ChestMemory extends System<ChestMemory> {
 			pos = null;
 			return;
 		}
-		Inventory inv = container.getInventory();
 		
-		if (pos != null) {
+
+		
+		Inventory inv = container.getInventory();
+		BlockState state = mc.world.getBlockState(new BlockPos(pos));
+		
+		
+		
+		if (pos != null && state.contains(Properties.CHEST_TYPE)) {
 			if (inv.isEmpty()) remove(pos);
 			
-			ContainerC container_temp = new ContainerC(ContainerC.Type.fromslots(inv.size()));
-			if (container_temp.getType() == ContainerC.Type.Null) {
-				remove(pos);
-				openedstate = 0;
-				pos = null;
-				return;
-			}
-			
-			for (int i = 0; i < inv.size(); i++) {
+			ChestType type = state.get(Properties.CHEST_TYPE);
+			switch (type) {
 				
-				if (inv.getStack(i).isEmpty()) continue;
-				container_temp.getITEMS()[i] = new ItemC(inv.getStack(i));
-				
-			}
-			if (!Arrays.stream(container_temp.getITEMS()).allMatch(Objects::isNull)) {
-				set(pos,container_temp);
-			}else {
-				remove(pos);
+				case SINGLE -> {
+					if (inv.isEmpty()) remove(pos);
+					else addChest(inv, pos);
+				}
+				case LEFT, RIGHT -> {
+					Vec3i otherchestblock = MathUtils.addVec3i(pos, ChestBlock.getFacing(state).getVector());
+					if (inv.isEmpty()) {
+						remove(pos);
+						remove(otherchestblock);
+					}else {
+						addChest(inv, pos);
+						set(otherchestblock, new ContainerC(pos));
+					}
+				}
 			}
 		}
 		openedstate = 0;
 		pos = null;
+	}
+	
+	private void addChest(Inventory inv, Vec3i pos) {
+		ContainerC container_temp = new ContainerC(ContainerC.Type.fromslots(inv.size()));
+		if (container_temp.getType() == ContainerC.Type.Null) {
+			remove(pos);
+			return;
+		}
+		
+		for (int i = 0; i < inv.size(); i++) {
+			
+			if (inv.getStack(i).isEmpty()) continue;
+			container_temp.getITEMS()[i] = new ItemC(inv.getStack(i));
+			
+		}
+		if (!Arrays.stream(container_temp.getITEMS()).allMatch(Objects::isNull)) {
+			set(pos,container_temp);
+		}else {
+			remove(pos);
+		}
 	}
 	
 	//endregion
@@ -183,9 +208,8 @@ public class ChestMemory extends System<ChestMemory> {
 				containertag.putInt("y",pos.getY());
 				containertag.putInt("z",pos.getZ());
 				NbtCompound cc = map.get(pos).toTag();
-				if (!cc.contains("items")) continue;
 				containertag.put("container",cc);
-				list.add(containertag);
+				if (tag.contains("container")) list.add(containertag);
 			}
 			if (!list.isEmpty()) save = true;
 			tag.put(dimension.name(), list);

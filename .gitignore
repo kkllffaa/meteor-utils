@@ -5,7 +5,7 @@ build/*
 out/
 classes/
 
-#exclude loom_cache and generated jars
+#exclude loom_cache
 
 !build/loom-cache
 

@@ -23,4 +23,15 @@ public class MathUtils {
 	public static Vec3i vecfromtag(NbtCompound tag) {
 		return new Vec3i(tag.getInt("x"), tag.getInt("y"), tag.getInt("z"));
 	}
+	public static NbtCompound vectotag(Vec3i vec) {
+		NbtCompound tag = new NbtCompound();
+		tag.putInt("x", vec.getX());
+		tag.putInt("y", vec.getY());
+		tag.putInt("z", vec.getZ());
+		return tag;
+	}
+	
+	public static Vec3i addVec3i (Vec3i a, Vec3i b) {
+		return new Vec3i(a.getX() + b.getX(), a.getY() + b.getY(), a.getZ() + b.getZ());
+	}
 }

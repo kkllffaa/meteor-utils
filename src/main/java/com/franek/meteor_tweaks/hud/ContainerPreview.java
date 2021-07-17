@@ -1,6 +1,5 @@
 package com.franek.meteor_tweaks.hud;
 
-import com.franek.meteor_tweaks.Addon;
 import com.franek.meteor_tweaks.systems.chestmemory.ChestMemory;
 import com.franek.meteor_tweaks.systems.chestmemory.ContainerC;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -14,11 +13,8 @@ import minegame159.meteorclient.systems.modules.render.hud.modules.HudElement;
 import minegame159.meteorclient.systems.modules.render.hud.modules.InventoryViewerHud;
 import minegame159.meteorclient.utils.render.RenderUtils;
 import minegame159.meteorclient.utils.render.color.SettingColor;
-import net.minecraft.block.AbstractChestBlock;
-import net.minecraft.block.EnderChestBlock;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.data.client.model.Texture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -108,7 +104,7 @@ public class ContainerPreview extends HudElement {
 			ContainerC con = ChestMemory.get(hitResult.getBlockPos());
 			
 			if (con == null) return;
-			if (con.getType() == ContainerC.Type.Null || con.getITEMS() == null || Arrays.stream(con.getITEMS()).allMatch(Objects::isNull)) {
+			if (con.getType() == ContainerC.Type.Null) {
 				ChestMemory.remove(hitResult.getBlockPos());
 				return;
 			}
@@ -116,12 +112,11 @@ public class ContainerPreview extends HudElement {
 			double x = box.getX();
 			double y = box.getY();
 			
-			db = con.getType() == ContainerC.Type.DoubleChest;
+			db = con.getType().isdouble();
 			drawBackground((int) x, (int) y, db);
 			drawItems(x, y, con.getType().rows(),con.asStack());
 			
 		}else if (isInEditor()){
-			//todo add double chest rendering
 			db = false;
 			drawBackground((int) box.getX(),(int) box.getY(), db);
 			drawItems(box.getX(),box.getY(), ContainerC.Type.SingleChest.rows(),defaultstack);
@@ -129,6 +124,7 @@ public class ContainerPreview extends HudElement {
 	}
 	
 	private void drawItems(double x, double y, int rows, ItemStack[] inventory) {
+		if (inventory == null || Arrays.stream(inventory).allMatch(Objects::isNull)) return;
 		for (int row = 0; row < rows; row++) {
 			for (int i = 0; i < 9; i++) {
 				ItemStack stack = inventory[row * 9 + i];
