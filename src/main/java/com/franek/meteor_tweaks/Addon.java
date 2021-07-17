@@ -3,8 +3,10 @@ package com.franek.meteor_tweaks;
 import com.franek.meteor_tweaks.commands.*;
 import com.franek.meteor_tweaks.modules.*;
 import com.franek.meteor_tweaks.hud.*;
+import com.franek.meteor_tweaks.systems.chestmemory.ChestMemory;
 import minegame159.meteorclient.MeteorAddon;
 import minegame159.meteorclient.MeteorClient;
+import minegame159.meteorclient.systems.System;
 import minegame159.meteorclient.systems.Systems;
 import minegame159.meteorclient.systems.commands.Commands;
 import minegame159.meteorclient.systems.modules.Modules;
@@ -12,8 +14,16 @@ import minegame159.meteorclient.systems.modules.render.hud.HUD;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Addon extends MeteorAddon {
 	public static final Logger LOG = LogManager.getLogger();
+	
+	//add custom systems here
+	public static final List<System<?>> mySystems = new ArrayList<>() {{
+		add(new ChestMemory());
+	}};
 	
 	@Override
 	public void onInitialize() {

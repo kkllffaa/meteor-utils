@@ -1,6 +1,7 @@
 package com.franek.meteor_tweaks.mixins;
 
-import com.franek.meteor_tweaks.systems.chestmemory.ChestMemory;
+import com.franek.meteor_tweaks.Addon;
+import minegame159.meteorclient.MeteorClient;
 import minegame159.meteorclient.systems.System;
 import minegame159.meteorclient.systems.Systems;
 import org.spongepowered.asm.mixin.Final;
@@ -10,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Mixin(value = Systems.class, remap = false)
@@ -32,21 +31,15 @@ public abstract class AddSystemsMixin {
 	@Inject(method = "init", at = @At("TAIL"))
 	private static void debil(CallbackInfo ci) {
 		
-		List<System<?>> mySystems = new ArrayList<>();
-		
-		mySystems.add(new ChestMemory());
-		
-		
-		
-		
-		
-		for (System<?> sys : mySystems) {
+		for (System<?> sys : Addon.mySystems) {
 			add(sys);
 		}
 		
 		for (System<?> system : systems.values()) {
-			//noinspection ConstantConditions
-			if (mySystems.contains(system)) system.init();
+			if (Addon.mySystems.contains(system)) {
+				MeteorClient.LOG.info("initializing custom systems: " + system.getClass().getSimpleName());
+				system.init();
+			}
 		}
 	}
 }
