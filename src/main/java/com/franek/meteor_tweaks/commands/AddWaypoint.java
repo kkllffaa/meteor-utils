@@ -17,10 +17,11 @@ public class AddWaypoint extends Command {
 	public void build(LiteralArgumentBuilder<CommandSource> builder) {
 		builder.then(argument("name", StringArgumentType.string()).executes(context -> {
 			
+			if (mc.player == null) return -1;
 			Waypoint waypoint = new Waypoint() {{
 				name =  context.getArgument("name", String.class);
 				actualDimension = PlayerUtils.getDimension();
-				//assert mc.player != null;
+				
 				
 				x = (int) mc.player.getX();
 				y = (int) mc.player.getY() + 2;

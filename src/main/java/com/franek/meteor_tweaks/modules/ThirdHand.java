@@ -36,6 +36,7 @@ public class ThirdHand extends Module {
 		Onblock
 	}
 	
+	@SuppressWarnings("unused")
 	public enum Itemstouse{
 		EChest(Items.ENDER_CHEST, Type.Place),
 		Obsidian(Items.OBSIDIAN, Type.Place),
@@ -101,8 +102,7 @@ public class ThirdHand extends Module {
 	@EventHandler
 	private void onMouseButton(MouseButtonEvent event) {
 		if (event.action != KeyAction.Press || event.button != GLFW_MOUSE_BUTTON_RIGHT || mc.currentScreen != null) return;
-		//assert mc.player != null;
-		if (!useditem.get().contains(mc.player.getMainHandStack().getItem())) return;
+		if (mc.player == null || !useditem.get().contains(mc.player.getMainHandStack().getItem())) return;
 		FindItemResult result = InvUtils.findInHotbar(itemstouse.get().item);
 		
 		if (!result.found()) {
@@ -123,7 +123,8 @@ public class ThirdHand extends Module {
 		
 		//assert mc.world != null;
 		
-		
+		if (mc.world == null ) throw new IllegalStateException("world is null");
+		if (mc.interactionManager == null) throw new IllegalStateException("interactionmenager is null");
 		BlockState blockState = mc.world.getBlockState(hitResult.getBlockPos());
 		if (BlockUtils.isClickable(blockState.getBlock())) return;
 		switch (itemstouse.get().type){
@@ -176,8 +177,7 @@ public class ThirdHand extends Module {
 	@EventHandler
 	private void onRender(RenderEvent event) {
 		if (!render.get()) return;
-		//assert mc.world != null;
-		//assert mc.crosshairTarget != null;
+		if (mc.world == null || mc.crosshairTarget == null) return;
 		if (!(mc.crosshairTarget instanceof BlockHitResult)) return;
 		BlockState blockState = mc.world.getBlockState(((BlockHitResult) mc.crosshairTarget).getBlockPos());
 		

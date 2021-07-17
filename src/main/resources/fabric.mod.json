@@ -7,7 +7,7 @@
   "authors": [
     "franek"
   ],
-  "icon": "assets/template/icon.png",
+  "icon": "assets/meteor_tweaks/icon.png",
   "environment": "client",
   "entrypoints": {
     "meteor": [

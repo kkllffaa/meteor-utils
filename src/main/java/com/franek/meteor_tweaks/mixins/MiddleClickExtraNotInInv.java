@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static minegame159.meteorclient.utils.Utils.mc;
 
-@Mixin(MiddleClickExtra.class)
+@Mixin(value = MiddleClickExtra.class, remap = false)
 public abstract class MiddleClickExtraNotInInv {
-	@Inject(method = "onMouseButton", at = @At("HEAD"),remap = false, cancellable = true)
+	@Inject(method = "onMouseButton", at = @At("HEAD"), cancellable = true)
 	private void debil(MouseButtonEvent event, CallbackInfo ci){
 		if (mc.currentScreen != null) ci.cancel();
 	}

@@ -7,14 +7,14 @@ import minegame159.meteorclient.utils.render.color.SettingColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(AirPlace.class)
+@Mixin(value = AirPlace.class, remap = false)
 public interface AirPlaceAccessor {
-	@Accessor(value = "sideColor",remap = false)
+	@Accessor(value = "sideColor")
 	Setting<SettingColor> sideColor();
-	@Accessor(value = "lineColor",remap = false)
+	@Accessor(value = "lineColor")
 	Setting<SettingColor> lineColor();
-	@Accessor(value = "shapeMode",remap = false)
+	@Accessor(value = "shapeMode")
 	Setting<ShapeMode> shapeMode();
-	@Accessor(value = "render" ,remap = false)
+	@Accessor(value = "render")
 	Setting<Boolean> render();
 }

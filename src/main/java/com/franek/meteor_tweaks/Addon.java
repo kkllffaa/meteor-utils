@@ -4,6 +4,8 @@ import com.franek.meteor_tweaks.commands.*;
 import com.franek.meteor_tweaks.modules.*;
 import com.franek.meteor_tweaks.hud.*;
 import minegame159.meteorclient.MeteorAddon;
+import minegame159.meteorclient.MeteorClient;
+import minegame159.meteorclient.systems.Systems;
 import minegame159.meteorclient.systems.commands.Commands;
 import minegame159.meteorclient.systems.modules.Modules;
 import minegame159.meteorclient.systems.modules.render.hud.HUD;
@@ -16,6 +18,7 @@ public class Addon extends MeteorAddon {
 	@Override
 	public void onInitialize() {
 		LOG.info("initializing meteor addon");
+		
 		
 		// Commands
 		Commands.get().add(new EchestPreview());

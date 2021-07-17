@@ -172,7 +172,7 @@ public class BookBot extends Command {
 	private void onTick(TickEvent.Post event) {
 		// Make sure we aren't in the inventory.
 		if (!running) return;
-		if (mc.currentScreen != null) return;
+		if (mc.currentScreen != null || mc.player == null) return;
 		// If there are no books left to write we are done.
 		if (mode == Mode.Number && noOfBooks <= 0){
 			running = false;
@@ -328,7 +328,8 @@ public class BookBot extends Command {
 			if (endOfStream) break;
 		}
 		
-		//assert mc.player != null;
+		
+		if (mc.player == null) return;
 		mc.player.getMainHandStack().putSubTag("pages", pages);
 		mc.player.getMainHandStack().putSubTag("author", NbtString.of(mc.player.getName().asString()));
 		mc.player.getMainHandStack().putSubTag("title", NbtString.of(name));
