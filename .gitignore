@@ -8,7 +8,6 @@ classes/
 #exclude loom_cache and generated jars
 
 !build/loom-cache
-!build/libs
 
 # eclipse
 
