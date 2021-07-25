@@ -1,7 +1,7 @@
 package com.franek.meteor_tweaks.modules;
 
-import minegame159.meteorclient.systems.modules.Categories;
-import minegame159.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Categories;
+import meteordevelopment.meteorclient.systems.modules.Module;
 
 public class Strafe extends Module {
 	public Strafe() {

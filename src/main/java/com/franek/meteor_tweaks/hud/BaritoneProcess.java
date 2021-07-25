@@ -1,8 +1,9 @@
 package com.franek.meteor_tweaks.hud;
 
 import baritone.api.BaritoneAPI;
-import minegame159.meteorclient.systems.modules.render.hud.HUD;
-import minegame159.meteorclient.systems.modules.render.hud.modules.DoubleTextHudElement;
+import baritone.api.process.IBaritoneProcess;
+import meteordevelopment.meteorclient.systems.modules.render.hud.HUD;
+import meteordevelopment.meteorclient.systems.modules.render.hud.modules.DoubleTextHudElement;
 
 public class BaritoneProcess extends DoubleTextHudElement {
 	public BaritoneProcess(HUD hud) {
@@ -11,7 +12,7 @@ public class BaritoneProcess extends DoubleTextHudElement {
 	
 	@Override
 	protected String getRight() {
-		var process = BaritoneAPI.getProvider().getPrimaryBaritone().getPathingControlManager().mostRecentInControl().orElse(null);
+		IBaritoneProcess process = BaritoneAPI.getProvider().getPrimaryBaritone().getPathingControlManager().mostRecentInControl().orElse(null);
 		
 		if (process == null) return "";
 		

@@ -1,7 +1,7 @@
 package com.franek.meteor_tweaks.mixins;
 
 import com.franek.meteor_tweaks.modules.NoPortalHitbox;
-import minegame159.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.block.ShapeContext;

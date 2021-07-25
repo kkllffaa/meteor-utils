@@ -1,9 +1,9 @@
 package com.franek.meteor_tweaks.mixins;
 
 import com.franek.meteor_tweaks.Addon;
-import minegame159.meteorclient.MeteorClient;
-import minegame159.meteorclient.systems.System;
-import minegame159.meteorclient.systems.Systems;
+import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.systems.System;
+import meteordevelopment.meteorclient.systems.Systems;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

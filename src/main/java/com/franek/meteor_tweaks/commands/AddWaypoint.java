@@ -2,10 +2,10 @@ package com.franek.meteor_tweaks.commands;
 
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import minegame159.meteorclient.systems.commands.Command;
-import minegame159.meteorclient.systems.waypoints.Waypoint;
-import minegame159.meteorclient.systems.waypoints.Waypoints;
-import minegame159.meteorclient.utils.player.PlayerUtils;
+import meteordevelopment.meteorclient.systems.commands.Command;
+import meteordevelopment.meteorclient.systems.waypoints.Waypoint;
+import meteordevelopment.meteorclient.systems.waypoints.Waypoints;
+import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import net.minecraft.command.CommandSource;
 
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;

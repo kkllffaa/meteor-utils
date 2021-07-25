@@ -1,7 +1,7 @@
 //file:noinspection GroovyUnusedAssignment
 //file:noinspection GroovyAssignabilityCheck
 plugins {
-    id 'fabric-loom' version '0.7-SNAPSHOT'
+    id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -25,9 +25,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Meteor
-    //modImplementation "com.github.MeteorDevelopment:meteor-client:master-SNAPSHOT"
-    modImplementation "com.github.MeteorDevelopment:meteor-client:v0.4.4"
-    //modImplementation "com.github.MeteorDevelopment:meteor-client:master-v0.1.1-g10f0ee1-2831"
+    modImplementation "com.github.MeteorDevelopment:meteor-client:master-SNAPSHOT"
 }
 
 processResources {
@@ -40,5 +38,5 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    it.options.release = 16
+    //it.options.release = 16
 }

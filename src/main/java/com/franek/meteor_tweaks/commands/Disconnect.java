@@ -1,7 +1,7 @@
 package com.franek.meteor_tweaks.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import minegame159.meteorclient.systems.commands.Command;
+import meteordevelopment.meteorclient.systems.commands.Command;
 import net.minecraft.command.CommandSource;
 import net.minecraft.network.packet.s2c.play.DisconnectS2CPacket;
 import net.minecraft.text.LiteralText;

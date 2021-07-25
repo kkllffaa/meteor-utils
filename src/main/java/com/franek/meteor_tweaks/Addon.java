@@ -3,14 +3,11 @@ package com.franek.meteor_tweaks;
 import com.franek.meteor_tweaks.commands.*;
 import com.franek.meteor_tweaks.modules.*;
 import com.franek.meteor_tweaks.hud.*;
-import com.franek.meteor_tweaks.systems.chestmemory.ChestMemory;
-import minegame159.meteorclient.MeteorAddon;
-import minegame159.meteorclient.MeteorClient;
-import minegame159.meteorclient.systems.System;
-import minegame159.meteorclient.systems.Systems;
-import minegame159.meteorclient.systems.commands.Commands;
-import minegame159.meteorclient.systems.modules.Modules;
-import minegame159.meteorclient.systems.modules.render.hud.HUD;
+import meteordevelopment.meteorclient.MeteorAddon;
+import meteordevelopment.meteorclient.systems.System;
+import meteordevelopment.meteorclient.systems.commands.Commands;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.render.hud.HUD;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +19,7 @@ public class Addon extends MeteorAddon {
 	
 	//add custom systems here
 	public static final List<System<?>> mySystems = new ArrayList<>() {{
-		add(new ChestMemory());
+		//add(new ChestMemory());
 	}};
 	
 	@Override
@@ -34,7 +31,6 @@ public class Addon extends MeteorAddon {
 		Commands.get().add(new EchestPreview());
 		Commands.get().add(new AddWaypoint());
 		Commands.get().add(new Disconnect());
-		Commands.get().add(new BookBot());
 		Commands.get().add(new Test());
 		
 		// Modules
@@ -46,7 +42,6 @@ public class Addon extends MeteorAddon {
 		//HUD
 		HUD hud = Modules.get().get(HUD.class);
 		hud.elements.add(new BaritoneProcess(hud));
-		hud.elements.add(new ContainerPreview(hud));
 		
 	}
 }

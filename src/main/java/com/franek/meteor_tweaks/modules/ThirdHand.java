@@ -1,22 +1,17 @@
 package com.franek.meteor_tweaks.modules;
 
-import com.franek.meteor_tweaks.mixins.AirPlaceAccessor;
+import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
+import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.systems.modules.Categories;
+import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
+import meteordevelopment.meteorclient.systems.modules.player.LiquidInteract;
+import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
+import meteordevelopment.meteorclient.utils.player.FindItemResult;
+import meteordevelopment.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import minegame159.meteorclient.events.meteor.MouseButtonEvent;
-import minegame159.meteorclient.events.render.RenderEvent;
-import minegame159.meteorclient.rendering.Renderer;
-import minegame159.meteorclient.settings.*;
-import minegame159.meteorclient.systems.modules.Categories;
-import minegame159.meteorclient.systems.modules.Module;
-import minegame159.meteorclient.systems.modules.Modules;
-import minegame159.meteorclient.systems.modules.player.LiquidInteract;
-import minegame159.meteorclient.systems.modules.world.AirPlace;
-import minegame159.meteorclient.utils.misc.input.KeyAction;
-import minegame159.meteorclient.utils.player.FindItemResult;
-import minegame159.meteorclient.utils.player.InvUtils;
-import minegame159.meteorclient.utils.world.BlockUtils;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
@@ -24,7 +19,6 @@ import net.minecraft.util.hit.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_RIGHT;
 
@@ -85,13 +79,6 @@ public class ThirdHand extends Module {
 		.defaultValue(false)
 		.build()
 	);
-	
-	private final Setting<Boolean> render = sgGeneral.add(new BoolSetting.Builder()
-			.name("render")
-			.description("Renders a block overlay where the obsidian will be placed if air place is enabled or liquid interact.")
-			.defaultValue(true)
-			.build()
-	);
 	//endregion
 	
 	public ThirdHand() {
@@ -113,7 +100,6 @@ public class ThirdHand extends Module {
 		
 		BlockHitResult hitResult;
 		
-		//assert mc.interactionManager != null;
 		if (mc.crosshairTarget instanceof BlockHitResult){
 			hitResult = (BlockHitResult) mc.crosshairTarget;
 		}else {
@@ -121,75 +107,51 @@ public class ThirdHand extends Module {
 		}
 		
 		
-		//assert mc.world != null;
-		
-		if (mc.world == null ) throw new IllegalStateException("world is null");
-		if (mc.interactionManager == null) throw new IllegalStateException("interactionmenager is null");
+		if (mc.world == null || mc.interactionManager == null) return;
 		BlockState blockState = mc.world.getBlockState(hitResult.getBlockPos());
 		if (BlockUtils.isClickable(blockState.getBlock())) return;
-		switch (itemstouse.get().type){
-			
+		switch (itemstouse.get().type) {
 			case Interact -> {
 				
 				event.cancel();
 				
-				int preSlot = mc.player.inventory.selectedSlot;
-				InvUtils.swap(result.getSlot());
+				int preSlot = mc.player.getInventory().selectedSlot;
+				InvUtils.swap(result.getSlot(), false);
 				mc.interactionManager.interactItem(mc.player, mc.world, Hand.MAIN_HAND);
-				InvUtils.swap(preSlot);
+				InvUtils.swap(preSlot, false);
 			}
 			case Place -> {
 				
-				if (blockState.isAir() || ((!Modules.get().isActive(LiquidInteract.class) && (blockState.getMaterial().isLiquid())))){
-					if (airplace.get()){
+				if (blockState.isAir() || ((!Modules.get().isActive(LiquidInteract.class) && (blockState.getMaterial().isLiquid())))) {
+					if (airplace.get()) {
 						event.cancel();
-						BlockUtils.place(hitResult.getBlockPos(),result,false,0,false,true);
+						BlockUtils.place(hitResult.getBlockPos(), result, false, 0, false, true);
 					}
-				}else if (blockState.getMaterial().isLiquid()){
-					if (Modules.get().isActive(LiquidInteract.class)){
+				} else if (blockState.getMaterial().isLiquid()) {
+					if (Modules.get().isActive(LiquidInteract.class)) {
 						event.cancel();
-						BlockUtils.place(hitResult.getBlockPos(),result,false,0,false,true);
+						BlockUtils.place(hitResult.getBlockPos(), result, false, 0, false, true);
 					}
-				}else {
+				} else {
 					
 					event.cancel();
 					
-					int preSlot = mc.player.inventory.selectedSlot;
-					InvUtils.swap(result.getSlot());
-					mc.interactionManager.interactBlock(mc.player,mc.world,Hand.MAIN_HAND,hitResult);
-					InvUtils.swap(preSlot);
+					int preSlot = mc.player.getInventory().selectedSlot;
+					InvUtils.swap(result.getSlot(), false);
+					mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, hitResult);
+					InvUtils.swap(preSlot, false);
 				}
 			}
 			case Onblock -> {
-				if (!(blockState.isAir() || blockState.getMaterial().isLiquid())){
+				if (!(blockState.isAir() || blockState.getMaterial().isLiquid())) {
 					event.cancel();
 					
-					int preSlot = mc.player.inventory.selectedSlot;
-					InvUtils.swap(result.getSlot());
-					mc.interactionManager.interactBlock(mc.player,mc.world,Hand.MAIN_HAND,hitResult);
-					InvUtils.swap(preSlot);
+					int preSlot = mc.player.getInventory().selectedSlot;
+					InvUtils.swap(result.getSlot(), false);
+					mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, hitResult);
+					InvUtils.swap(preSlot, false);
 				}
 			}
 		}
-	}
-	
-	
-	@EventHandler
-	private void onRender(RenderEvent event) {
-		if (!render.get()) return;
-		if (mc.world == null || mc.crosshairTarget == null) return;
-		if (!(mc.crosshairTarget instanceof BlockHitResult)) return;
-		BlockState blockState = mc.world.getBlockState(((BlockHitResult) mc.crosshairTarget).getBlockPos());
-		
-		if (!(airplace.get() || (Modules.get().get(LiquidInteract.class).isActive() && (blockState.getMaterial().isLiquid())))
-				|| !blockState.getMaterial().isReplaceable()
-				|| !useditem.get().contains(Objects.requireNonNull(mc.player).getMainHandStack().getItem())
-				|| itemstouse.get().type != Type.Place
-		) return;
-		if (Modules.get().get(AirPlace.class).isActive()
-				&& !(!(mc.player.getMainHandStack().getItem() instanceof BlockItem) || !((AirPlaceAccessor) Modules.get().get(AirPlace.class)).render().get())
-		) return;
-		
-		Renderer.boxWithLines(Renderer.NORMAL, Renderer.LINES, ((BlockHitResult) mc.crosshairTarget).getBlockPos(), ((AirPlaceAccessor) Modules.get().get(AirPlace.class)).sideColor().get(), ((AirPlaceAccessor) Modules.get().get(AirPlace.class)).lineColor().get(), ((AirPlaceAccessor) Modules.get().get(AirPlace.class)).shapeMode().get(), 0);
 	}
 }
