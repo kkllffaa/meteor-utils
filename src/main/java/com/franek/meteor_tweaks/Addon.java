@@ -8,6 +8,7 @@ import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.hud.HUD;
+import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,6 +27,7 @@ public class Addon extends MeteorAddon {
 	public void onInitialize() {
 		LOG.info("initializing meteor addon");
 		
+		MinecraftClient.getInstance().options.advancedItemTooltips = true;
 		
 		// Commands
 		Commands.get().add(new EchestPreview());
