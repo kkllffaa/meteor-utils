@@ -12,12 +12,12 @@ public class NoPauseOnLostFocus extends Module {
 	
 	@Override
 	public void onActivate() {
-		MinecraftClient.getInstance().options.pauseOnLostFocus = true;
+		MinecraftClient.getInstance().options.pauseOnLostFocus = false;
 	}
 	
 	@Override
 	public void onDeactivate() {
-		MinecraftClient.getInstance().options.pauseOnLostFocus = false;
+		MinecraftClient.getInstance().options.pauseOnLostFocus = true;
 	}
 	
 	public void init() {
