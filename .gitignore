@@ -1,13 +1,9 @@
 # gradle
 
 .gradle/
-build/*
+build/
 out/
 classes/
-
-#exclude loom_cache
-
-!build/loom-cache
 
 # eclipse
 
@@ -35,3 +31,4 @@ bin/
 # fabric
 
 run/
+/build/loom-cache/

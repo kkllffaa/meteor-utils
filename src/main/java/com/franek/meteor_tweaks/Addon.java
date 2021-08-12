@@ -7,6 +7,7 @@ import meteordevelopment.meteorclient.MeteorAddon;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.commands.Commands;
+import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.hud.HUD;
 import net.minecraft.client.MinecraftClient;
@@ -39,10 +40,12 @@ public class Addon extends MeteorAddon {
 		Commands.get().add(new EchestPreview());
 		Commands.get().add(new AddWaypoint());
 		Commands.get().add(new Disconnect());
+		Commands.get().add(new Test());
 		
 		// Modules
 		Modules.get().add(new ThirdHand());
 		Modules.get().add(new NoPortalHitbox());
+		Modules.get().add(new OpenAnarchyAutoDupe(Categories.Misc));
 		
 		
 		Modules.get().add(new NoPauseOnLostFocus());
@@ -54,6 +57,7 @@ public class Addon extends MeteorAddon {
 		//HUD
 		HUD hud = Modules.get().get(HUD.class);
 		hud.elements.add(new BaritoneProcess(hud));
+		hud.elements.add(new OADupeDisplay(hud));
 		
 	}
 }
