@@ -3,15 +3,19 @@ package com.franek.meteor_tweaks.modules;
 import com.franek.meteor_tweaks.utils.MyBlockUtils;
 import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
+import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.movement.Scaffold;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
+import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
@@ -23,6 +27,7 @@ import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +104,7 @@ public class OpenAnarchyAutoDupe extends Module {
 	
 	private int timer = 0;
 	private int timerpiston = 0;
+	private int redstonetimer = 0;
 	
 	private ItemFrameEntity currentframe = null;
 	
@@ -109,6 +115,7 @@ public class OpenAnarchyAutoDupe extends Module {
 		stage = Stage.Waitforpiston;
 		timer = 0;
 		timerpiston = 0;
+		redstonetimer = 0;
 		currentframe = null;
 		redstone = findredstone();
 	}
@@ -133,17 +140,24 @@ public class OpenAnarchyAutoDupe extends Module {
 		
 		if (lag()) return;
 		
-		if (redstone == null || mc.player.getBlockPos().isWithinDistance(redstone, 3)) {
+		if (redstone == null || !mc.player.getBlockPos().isWithinDistance(redstone, 4)) {
+			if (redstonetimer > 100) {
+				info("no redstone nerby");
+				toggle();
+				return;
+			}
+			redstonetimer++;
 			redstone = findredstone();
 			return;
 		}
+		redstonetimer = 0;
 		
 		final List<BlockPos> pistons = new ArrayList<>();
 		
 		MyBlockUtils.immediateBlockIterator(3, 2, (blockPos, blockState) -> pistons.add(blockPos), Blocks.PISTON);
 		
 		if (pistons.isEmpty()) {
-			if (timerpiston > 5) {
+			if (timerpiston > 100) {
 				info("no pistons nerby");
 				toggle();
 				return;
@@ -265,12 +279,7 @@ public class OpenAnarchyAutoDupe extends Module {
 				if (currentframe == null || !currentframe.isAlive()) {
 					stage = Stage.Placeitemframes;
 					timer = 0;
-				}else if (!currentframe.getHeldItemStack().isEmpty()) {
-					if (timer > shulkerdelay.get()) {
-						stage = Stage.Placeshulker;
-						timer = 0;
-					}
-				}else if (timer > maxdelay.get()) {
+				}else if ((!currentframe.getHeldItemStack().isEmpty() && timer > shulkerdelay.get()) || timer > maxdelay.get()) {
 					stage = Stage.Placeshulker;
 					timer = 0;
 				}
@@ -308,6 +317,13 @@ public class OpenAnarchyAutoDupe extends Module {
 					timer = 0;
 				}
 			}
+		}
+	}
+	
+	@EventHandler
+	public void onRender(Render3DEvent event) {
+		if (mc.player != null && redstone != null/* && mc.player.getBlockPos().isWithinDistance(redstone, 4)*/) {
+			event.renderer.box(redstone.getX(), redstone.getY(), redstone.getZ(), redstone.getX() + 1, redstone.getY() + 0.25, redstone.getZ() + 1, new Color(1f, 0.6f, 0.2f, 0.2f), new Color(0f, 1f, 0.5f, 1f), ShapeMode.Both, 0);
 		}
 	}
 	
