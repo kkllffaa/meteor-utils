@@ -22,7 +22,6 @@ import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.item.Items;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -53,12 +52,12 @@ public class OpenAnarchyAutoDupe extends Module {
 			.build()
 	);
 	
-	private final Setting<Integer> leverdelay = sgGeneral.add(new IntSetting.Builder()
-			.name("leverdelay")
-			.description("delay between lever activation")
-			.defaultValue(50)
+	private final Setting<Integer> redstonedelay = sgGeneral.add(new IntSetting.Builder()
+			.name("redstone delay")
+			.description("delay between placing and braking redstone")
+			.defaultValue(20)
 			.min(0)
-			.sliderMax(300)
+			.sliderMax(100)
 			.build()
 	);
 	
@@ -73,7 +72,7 @@ public class OpenAnarchyAutoDupe extends Module {
 	
 	private final Setting<Integer> shulkerpickup = sgGeneral.add(new IntSetting.Builder()
 			.name("shulker pickup delay")
-			.description("turn off when no shulkers in inventory")
+			.description("delay before turn off when no shulkers in inventory")
 			.defaultValue(40)
 			.min(0)
 			.sliderMax(80)
@@ -103,7 +102,7 @@ public class OpenAnarchyAutoDupe extends Module {
 	
 	private ItemFrameEntity currentframe = null;
 	
-	private BlockPos lever = null;
+	private BlockPos redstone = null;
 	
 	@Override
 	public void onActivate() {
@@ -111,40 +110,56 @@ public class OpenAnarchyAutoDupe extends Module {
 		timer = 0;
 		timerpiston = 0;
 		currentframe = null;
-		lever = null;
+		redstone = findredstone();
+	}
+	
+	public static BlockPos findredstone() {
+		var ref = new Object() {
+			BlockPos _redstone = null;
+		};
+		MyBlockUtils.immediateBlockIterator(3, 2, (blockPos, blockState) -> {
+			if (blockState.get(Properties.POWER) > 0) {
+				ref._redstone = blockPos;
+				MyBlockUtils.disableCurrent();
+			}
+		}, Blocks.REDSTONE_WIRE);
+		return ref._redstone;
 	}
 	
 	@EventHandler
 	public void onTick(TickEvent.Pre event) {
+		//region before
 		if (mc.player == null || mc.world == null || mc.interactionManager == null) return;
 		
 		if (lag()) return;
+		
+		if (redstone == null || mc.player.getBlockPos().isWithinDistance(redstone, 3)) {
+			redstone = findredstone();
+			return;
+		}
 		
 		final List<BlockPos> pistons = new ArrayList<>();
 		
 		MyBlockUtils.immediateBlockIterator(3, 2, (blockPos, blockState) -> pistons.add(blockPos), Blocks.PISTON);
 		
-		if (pistons.isEmpty() && timerpiston <= 5) {
+		if (pistons.isEmpty()) {
+			if (timerpiston > 5) {
+				info("no pistons nerby");
+				toggle();
+				return;
+			}
 			timerpiston++;
 			return;
 		}
 		timerpiston = 0;
-		
-		if (pistons.isEmpty()) {
-			info("no pistons nerby");
-			toggle();
-			return;
-		}
+		//endregion
 		
 		timer++;
 		switch (stage) {
-			case Waitforpiston -> MyBlockUtils.immediateBlockIterator(3, 2, (blockPos, blockState) -> {
-				if (blockState.get(Properties.POWERED)) {
-					for (BlockPos pos : pistons) {
-						if (mc.world.getBlockState(pos).get(Properties.EXTENDED) && timer > leverdelay.get()) {
-							mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(mc.player.getPos(), blockState.get(Properties.HORIZONTAL_FACING), blockPos, false));
-							timer = 0;
-						}
+			case Waitforpiston -> {
+				if (!mc.world.isAir(redstone) && mc.world.getBlockState(redstone).getBlock() == Blocks.REDSTONE_WIRE && mc.world.getBlockState(redstone).get(Properties.POWER) > 0) {
+					if (pistons.stream().allMatch(s -> mc.world.getBlockState(s).get(Properties.EXTENDED)) && timer > redstonedelay.get()) {
+						BlockUtils.breakBlock(redstone, true);
 					}
 				}else if (timer > maxdelay.get()) {
 					stage = Stage.Activate;
@@ -153,8 +168,7 @@ public class OpenAnarchyAutoDupe extends Module {
 					stage = Stage.Placeitemframes;
 					timer = 0;
 				}
-				MyBlockUtils.disableCurrent();
-			}, Blocks.LEVER);
+			}
 			case Placeitemframes -> {
 				FindItemResult frames = InvUtils.findInHotbar(Items.ITEM_FRAME);
 				if (!frames.found() || frames.getCount() < pistons.size()) {
@@ -239,7 +253,10 @@ public class OpenAnarchyAutoDupe extends Module {
 							currentframe = (ItemFrameEntity) entity;
 							timer = 0;
 							return;
-						}else stage = Stage.Activate;
+						}else {
+							stage = Stage.Activate;
+							timer = 0;
+						}
 					}
 				}
 			}
@@ -247,30 +264,42 @@ public class OpenAnarchyAutoDupe extends Module {
 				
 				if (currentframe == null || !currentframe.isAlive()) {
 					stage = Stage.Placeitemframes;
-					return;
-				}
-				if (timer > shulkerdelay.get() && currentframe.getHeldItemStack().isEmpty()) {
-					stage = Stage.Placeshulker;
 					timer = 0;
-				}
-				if (timer > maxdelay.get()) {
+				}else if (!currentframe.getHeldItemStack().isEmpty()) {
+					if (timer > shulkerdelay.get()) {
+						stage = Stage.Placeshulker;
+						timer = 0;
+					}
+				}else if (timer > maxdelay.get()) {
 					stage = Stage.Placeshulker;
 					timer = 0;
 				}
 			}
-			case Activate -> MyBlockUtils.immediateBlockIterator(2,2,(blockPos, blockState) -> {
+			case Activate -> {
 				
-				if (!blockState.get(Properties.POWERED)) mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(mc.player.getPos(), blockState.get(Properties.HORIZONTAL_FACING), blockPos, false));
+				if (timer < redstonedelay.get()) return;
+				
+				FindItemResult result = InvUtils.findInHotbar(Items.REDSTONE);
+				
+				if (!result.found()) {
+					toggle();
+					info("no redstone");
+					return;
+				}
+				
+				if (mc.world.isAir(redstone))
+					BlockUtils.place(redstone, result, false, 0, true, false);
 				
 				timer = 0;
 				stage = Stage.Waitpistonsextend;
-				MyBlockUtils.disableCurrent();
-			}, Blocks.LEVER);
-			case Waitpistonsextend -> MyBlockUtils.immediateBlockIterator(2, 2, (blockPos, blockState) -> {
-				
-				if (blockState.get(Properties.POWERED)) {
+			}
+			case Waitpistonsextend -> {
+				if (!mc.world.isAir(redstone) && mc.world.getBlockState(redstone).getBlock() == Blocks.REDSTONE_WIRE && mc.world.getBlockState(redstone).get(Properties.POWER) > 0) {
 					
 					if (pistons.stream().allMatch(s -> mc.world.getBlockState(s).get(Properties.EXTENDED))) {
+						stage = Stage.Waitforpiston;
+						timer = 0;
+					}else if (timer > maxdelay.get()) {
 						stage = Stage.Waitforpiston;
 						timer = 0;
 					}
@@ -278,8 +307,7 @@ public class OpenAnarchyAutoDupe extends Module {
 					stage = Stage.Activate;
 					timer = 0;
 				}
-				MyBlockUtils.disableCurrent();
-			}, Blocks.LEVER);
+			}
 		}
 	}
 	
