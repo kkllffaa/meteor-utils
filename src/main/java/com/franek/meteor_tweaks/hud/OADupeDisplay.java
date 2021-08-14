@@ -4,6 +4,7 @@ import com.franek.meteor_tweaks.modules.OpenAnarchyAutoDupe;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.hud.HUD;
 import meteordevelopment.meteorclient.systems.modules.render.hud.modules.DoubleTextHudElement;
+import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 
 public class OADupeDisplay extends DoubleTextHudElement {
@@ -17,7 +18,13 @@ public class OADupeDisplay extends DoubleTextHudElement {
 		
 		if (mod.isActive()) {
 			visible = true;
-			return mod.lag() ? "lag:  "+TickRate.INSTANCE.getTimeSinceLastTick() : String.valueOf(mod.getStage());
+			if (mod.lag()) {
+				rightColor = new Color(1f, 0f, 0f, 1f);
+				return "lag:  "+TickRate.INSTANCE.getTimeSinceLastTick();
+			}else {
+				rightColor = new Color(0f, 1f, 0f, 1f);
+				return String.valueOf(mod.getStage());
+			}
 		}else {
 			visible = false;
 			return "";

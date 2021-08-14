@@ -1,17 +1,18 @@
 package com.franek.meteor_tweaks.modules;
 
 import com.franek.meteor_tweaks.utils.MyBlockUtils;
+import com.franek.meteor_tweaks.utils.MyRenderUtils;
 import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
+import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.movement.Scaffold;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
@@ -48,42 +49,61 @@ public class OpenAnarchyAutoDupe extends Module {
 	
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
 	
+	//region delays
 	private final Setting<Integer> maxdelay = sgGeneral.add(new IntSetting.Builder()
 			.name("max delay")
 			.description("max delay before redoing action in ticks")
 			.defaultValue(15)
 			.min(0)
+			.sliderMin(0)
 			.sliderMax(100)
 			.build()
 	);
 	
 	private final Setting<Integer> redstonedelay = sgGeneral.add(new IntSetting.Builder()
 			.name("redstone delay")
-			.description("delay between placing and braking redstone")
+			.description("delay between placing and braking redstone in ticks")
 			.defaultValue(20)
 			.min(0)
+			.sliderMin(0)
 			.sliderMax(100)
 			.build()
 	);
 	
 	private final Setting<Integer> shulkerdelay = sgGeneral.add(new IntSetting.Builder()
 			.name("shulker delay")
-			.description("delay between placing shulkers")
+			.description("delay between placing shulkers in ticks")
 			.defaultValue(5)
 			.min(0)
+			.sliderMin(0)
 			.sliderMax(15)
 			.build()
 	);
 	
 	private final Setting<Integer> shulkerpickup = sgGeneral.add(new IntSetting.Builder()
 			.name("shulker pickup delay")
-			.description("delay before turn off when no shulkers in inventory")
+			.description("delay before turn off when no shulkers in inventory in ticks")
 			.defaultValue(40)
 			.min(0)
+			.sliderMin(0)
 			.sliderMax(80)
 			.build()
 	);
+	//endregion
+	//region render
+	private final Setting<Boolean> renderredstone = sgGeneral.add(new BoolSetting.Builder()
+			.name("render redstone")
+			.description("render place for redstone")
+			.defaultValue(true)
+			.build()
+	);
 	
+	private final Setting<Boolean> renderframes = sgGeneral.add(new BoolSetting.Builder()
+			.name("render frames")
+			.description("render where shulker is placed")
+			.defaultValue(true)
+			.build()
+	);
 	//endregion
 	
 	public OpenAnarchyAutoDupe(Category category) {
@@ -210,7 +230,7 @@ public class OpenAnarchyAutoDupe extends Module {
 			case Waitforframes -> {
 				
 				for (Entity entity : mc.world.getEntities()) {
-					if (!(entity instanceof ItemFrameEntity) || mc.player.distanceTo(entity) > 3) continue;
+					if (!(entity instanceof ItemFrameEntity) || mc.player.distanceTo(entity) > 4) continue;
 					
 					if (pistons.stream().noneMatch(s -> entity.getBlockPos().equals(s.offset(mc.world.getBlockState(s).get(Properties.FACING))))) {
 						if (timer > maxdelay.get()) {
@@ -227,7 +247,7 @@ public class OpenAnarchyAutoDupe extends Module {
 			}
 			case Placeshulker -> {
 				for (Entity entity : mc.world.getEntities()) {
-					if (!(entity instanceof ItemFrameEntity) || mc.player.distanceTo(entity) > 3) continue;
+					if (!(entity instanceof ItemFrameEntity) || mc.player.distanceTo(entity) > 4) continue;
 					
 					
 					if (pistons.stream().anyMatch(s -> entity.getBlockPos().equals(s.offset(mc.world.getBlockState(s).get(Properties.FACING))))) {
@@ -238,7 +258,7 @@ public class OpenAnarchyAutoDupe extends Module {
 							
 							
 							if (!shulker.found()) {
-								if (stage != Stage.Activate || timer > shulkerpickup.get()) {
+								if (/*stage != Stage.Activate || */timer > shulkerpickup.get()) {
 									toggle();
 									info("no shulkers");
 								}
@@ -253,6 +273,7 @@ public class OpenAnarchyAutoDupe extends Module {
 								if (empty.found() && empty.isHotbar()) {
 									InvUtils.move().from(shulker.getSlot()).toHotbar(empty.getSlot());
 									InvUtils.swap(empty.getSlot());
+									mc.interactionManager.interactEntity(mc.player, entity,Hand.MAIN_HAND);
 								}else {
 									toggle();
 									info("no empty slots in hotbar");
@@ -322,12 +343,24 @@ public class OpenAnarchyAutoDupe extends Module {
 	
 	@EventHandler
 	public void onRender(Render3DEvent event) {
-		if (mc.player != null && redstone != null/* && mc.player.getBlockPos().isWithinDistance(redstone, 4)*/) {
+		if (mc.player == null) return;
+		if (redstone != null && renderredstone.get()) {
 			event.renderer.box(redstone.getX(), redstone.getY(), redstone.getZ(), redstone.getX() + 1, redstone.getY() + 0.25, redstone.getZ() + 1, new Color(1f, 0.6f, 0.2f, 0.2f), new Color(0f, 1f, 0.5f, 1f), ShapeMode.Both, 0);
 		}
+		
+		if (currentframe != null && (stage == Stage.Placeshulker || stage == Stage.Waitforshulker) && renderframes.get()) {
+			int x = (int) currentframe.getRotationVector().x;
+			int y = (int) currentframe.getRotationVector().y;
+			int z = (int) currentframe.getRotationVector().z;
+			
+			Direction direction = Direction.fromVector(x,y,z);
+			
+			if (direction != null) {
+				MyRenderUtils.renderQuad(currentframe.getBlockPos(), direction.getOpposite(),event, new Color(1f,0f,0f,0.5f));
+			}
+		}
+		
 	}
-	
-	
 	
 	@EventHandler
 	public void onGameJoin(GameJoinedEvent event) {
