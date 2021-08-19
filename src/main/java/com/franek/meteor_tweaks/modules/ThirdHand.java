@@ -1,5 +1,6 @@
 package com.franek.meteor_tweaks.modules;
 
+import com.franek.meteor_tweaks.Addon;
 import meteordevelopment.meteorclient.events.meteor.MouseButtonEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.BoolSetting;
@@ -47,7 +48,7 @@ public class ThirdHand extends Module {
 	//endregion
 	
 	public ThirdHand() {
-		super(Categories.Player, "Third Hand", "places obi instead of other items.");
+		super(Addon.CATEGORY, "Third Hand", "places obi instead of other items.");
 	}
 	
 	private int swich = -1;

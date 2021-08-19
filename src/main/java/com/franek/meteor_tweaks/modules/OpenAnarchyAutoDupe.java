@@ -1,5 +1,6 @@
 package com.franek.meteor_tweaks.modules;
 
+import com.franek.meteor_tweaks.Addon;
 import com.franek.meteor_tweaks.utils.MyBlockUtils;
 import com.franek.meteor_tweaks.utils.MyRenderUtils;
 import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
@@ -106,8 +107,8 @@ public class OpenAnarchyAutoDupe extends Module {
 	);
 	//endregion
 	
-	public OpenAnarchyAutoDupe(Category category) {
-		super(category, "OpenAnarchyAutoDupe", "description");
+	public OpenAnarchyAutoDupe() {
+		super(Addon.CATEGORY, "OpenAnarchyAutoDupe", "description");
 	}
 	
 	public Stage getStage() {
