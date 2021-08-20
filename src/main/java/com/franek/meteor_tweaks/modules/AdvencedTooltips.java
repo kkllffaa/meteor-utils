@@ -1,13 +1,13 @@
 package com.franek.meteor_tweaks.modules;
 
-import meteordevelopment.meteorclient.systems.modules.Categories;
+import com.franek.meteor_tweaks.Addon;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import net.minecraft.client.MinecraftClient;
 
 public class AdvencedTooltips extends Module {
  
 	public AdvencedTooltips() {
-		super(Categories.Misc, "advenced tooltips", "");
+		super(Addon.CATEGORY, "advenced tooltips", "");
 	}
 	
 	@Override

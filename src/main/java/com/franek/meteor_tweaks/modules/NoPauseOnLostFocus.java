@@ -1,13 +1,13 @@
 package com.franek.meteor_tweaks.modules;
 
-import meteordevelopment.meteorclient.systems.modules.Categories;
+import com.franek.meteor_tweaks.Addon;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import net.minecraft.client.MinecraftClient;
 
 public class NoPauseOnLostFocus extends Module {
  
 	public NoPauseOnLostFocus() {
-		super(Categories.Misc, "no pause on lost focus", "allow alt+tab without pause");
+		super(Addon.CATEGORY, "no pause on lost focus", "allow alt+tab without pause");
 	}
 	
 	@Override

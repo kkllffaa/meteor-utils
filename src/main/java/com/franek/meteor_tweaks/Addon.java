@@ -1,13 +1,16 @@
 package com.franek.meteor_tweaks;
 
-import com.franek.meteor_tweaks.commands.*;
+import com.franek.meteor_tweaks.commands.AddWaypoint;
+import com.franek.meteor_tweaks.commands.Disconnect;
+import com.franek.meteor_tweaks.commands.EchestPreview;
+import com.franek.meteor_tweaks.commands.Test;
+import com.franek.meteor_tweaks.hud.BaritoneProcess;
+import com.franek.meteor_tweaks.hud.OADupeDisplay;
 import com.franek.meteor_tweaks.modules.*;
-import com.franek.meteor_tweaks.hud.*;
 import meteordevelopment.meteorclient.MeteorAddon;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.commands.Commands;
-import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.render.hud.HUD;
@@ -54,8 +57,8 @@ public class Addon extends MeteorAddon {
 		
 		
 		Modules.get().add(new NoPauseOnLostFocus());
-		Modules.get().get(NoPauseOnLostFocus.class).init();
 		Modules.get().add(new AdvencedTooltips());
+		Modules.get().get(NoPauseOnLostFocus.class).init();
 		Modules.get().get(AdvencedTooltips.class).init();
 
 		
