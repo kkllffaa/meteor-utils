@@ -52,7 +52,7 @@ public class Addon extends MeteorAddon {
 		Modules.get().add(new ThirdHand());
 		Modules.get().add(new NoPortalHitbox());
 		Modules.get().add(new OpenAnarchyAutoDupe());
-		Modules.get().add(new AutoBreak());
+		//Modules.get().add(new AutoBreak());
 		Modules.get().add(new AutoFarm());
 		
 		

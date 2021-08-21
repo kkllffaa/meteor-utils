@@ -11,7 +11,7 @@ import net.minecraft.command.CommandSource;
 import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
 
 public class AddWaypoint extends Command {
-	public AddWaypoint(){super("add_waypoint","adds waypoint via command in actual coords");}
+	public AddWaypoint(){super("addwaypoint","adds waypoint via command in actual coords");}
 	
 	@Override
 	public void build(LiteralArgumentBuilder<CommandSource> builder) {

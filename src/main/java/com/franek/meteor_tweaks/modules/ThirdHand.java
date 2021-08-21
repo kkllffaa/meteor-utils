@@ -7,19 +7,13 @@ import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.ItemListSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.Categories;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.misc.input.KeyAction;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
-import meteordevelopment.meteorclient.utils.player.PlayerUtils;
-import meteordevelopment.meteorclient.utils.world.BlockUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,7 +42,7 @@ public class ThirdHand extends Module {
 	//endregion
 	
 	public ThirdHand() {
-		super(Addon.CATEGORY, "Third Hand", "places obi instead of other items.");
+		super(Addon.CATEGORY, "Third-Hand", "places obi instead of other items.");
 	}
 	
 	private int swich = -1;

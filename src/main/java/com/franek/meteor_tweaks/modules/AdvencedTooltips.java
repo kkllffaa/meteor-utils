@@ -7,7 +7,7 @@ import net.minecraft.client.MinecraftClient;
 public class AdvencedTooltips extends Module {
  
 	public AdvencedTooltips() {
-		super(Addon.CATEGORY, "advenced tooltips", "");
+		super(Addon.CATEGORY, "advenced-tooltips", "shows durability, name etc. in tooltip");
 	}
 	
 	@Override

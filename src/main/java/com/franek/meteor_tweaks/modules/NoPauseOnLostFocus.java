@@ -7,7 +7,7 @@ import net.minecraft.client.MinecraftClient;
 public class NoPauseOnLostFocus extends Module {
  
 	public NoPauseOnLostFocus() {
-		super(Addon.CATEGORY, "no pause on lost focus", "allow alt+tab without pause");
+		super(Addon.CATEGORY, "no-pause-on-lost-focus", "allow alt+tab without pause");
 	}
 	
 	@Override

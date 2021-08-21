@@ -6,7 +6,6 @@ import meteordevelopment.meteorclient.settings.BlockListSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.BlockIterator;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class AutoBreak extends Module {
 	public AutoBreak() {
-		super(Addon.CATEGORY, "auto break", "description");
+		super(Addon.CATEGORY, "auto-break", "description");
 	}
 	
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
