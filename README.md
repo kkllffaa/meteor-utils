@@ -7,4 +7,4 @@ A template to allow easy usage of the Meteor Addon API.
 - Use this template to create new modules/commands
 - Run the mod with Meteor.
 
-https://github.com/kkllffaa/kkllffaa/blob/main/.github/images/openanarchyautodupeshowcase.mp4
+https://user-images.githubusercontent.com/68471730/132132642-6a38bfed-fe86-4335-8780-6bff02036bcf.mp4
