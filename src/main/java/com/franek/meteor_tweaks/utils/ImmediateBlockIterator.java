@@ -2,22 +2,21 @@ package com.franek.meteor_tweaks.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.Arrays;
 import java.util.function.BiConsumer;
 
-public class MyBlockUtils {
+import static meteordevelopment.meteorclient.utils.Utils.mc;
+
+public class ImmediateBlockIterator {
 	
 	private static boolean disablecurrent;
 	
 	/**
-	 *
 	 * @param blocks empty for running fuction for every block without filter
 	 */
-	public static void immediateBlockIterator(int horizontalradius, int verticalradius, BiConsumer<BlockPos, BlockState> function, Block... blocks) {
-		MinecraftClient mc = MinecraftClient.getInstance();
+	public static void register(int horizontalradius, int verticalradius, BiConsumer<BlockPos, BlockState> function, Block... blocks) {
 		if (mc.world == null || mc.player == null) return;
 		
 		

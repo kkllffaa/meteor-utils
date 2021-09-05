@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
+  "name": "meteor tweaks",
   "id": "meteor_tweaks",
   "version": "${version}",
-  "name": "meteor tweaks",
   "description": "adds some modules to meteor client",
   "authors": [
     "franek"

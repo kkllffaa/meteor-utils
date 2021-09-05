@@ -1,8 +1,8 @@
 package com.franek.meteor_tweaks.modules;
 
 import com.franek.meteor_tweaks.Addon;
-import com.franek.meteor_tweaks.utils.MyBlockUtils;
-import com.franek.meteor_tweaks.utils.MyItemUtils;
+import com.franek.meteor_tweaks.utils.ImmediateBlockIterator;
+import com.franek.meteor_tweaks.utils.MyInvUtils;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.BlockUtils;
@@ -17,8 +17,6 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-import java.util.Optional;
-
 public class AutoFarm extends Module {
 	public AutoFarm() {
 		super(Addon.CATEGORY, "auto-farm", "automaticly harvest and bonemeal crop");
@@ -29,7 +27,7 @@ public class AutoFarm extends Module {
 	@Override
 	public void onActivate() {
 		pos = null;
-		MyBlockUtils.immediateBlockIterator(1, 1, (blockPos, blockState) -> {pos = blockPos; MyBlockUtils.disableCurrent();}, Blocks.WHEAT);
+		ImmediateBlockIterator.register(1, 1, (blockPos, blockState) -> {pos = blockPos; ImmediateBlockIterator.disableCurrent();}, Blocks.WHEAT);
 		if (pos == null) toggle();
 	}
 	
@@ -45,10 +43,10 @@ public class AutoFarm extends Module {
 			if (state.getBlock() == Blocks.WHEAT) {
 				if (state.get(Properties.AGE_7) == Properties.AGE_7_MAX) {
 					BlockUtils.breakBlock(pos, true);
-				}else if (MyItemUtils.switchtoitem(Items.BONE_MEAL, Optional.of(this))) {
+				}else if (MyInvUtils.switchtoitem(Items.BONE_MEAL, true, true, this)) {
 					mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(mc.player.getPos(), Direction.UP, pos, false));
 				}else toggle();
-			}else if (state.isAir() && MyItemUtils.switchtoitem(Items.WHEAT_SEEDS, Optional.of(this))) {
+			}else if (state.isAir() && MyInvUtils.switchtoitem(Items.WHEAT_SEEDS, true, true, this)) {
 				BlockUtils.place(pos, Hand.MAIN_HAND, mc.player.getInventory().selectedSlot, false, 0, true, false, false);
 			}else toggle();
 

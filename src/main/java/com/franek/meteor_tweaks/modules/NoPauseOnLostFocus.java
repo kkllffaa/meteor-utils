@@ -2,26 +2,23 @@ package com.franek.meteor_tweaks.modules;
 
 import com.franek.meteor_tweaks.Addon;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import net.minecraft.client.MinecraftClient;
+import meteordevelopment.meteorclient.utils.Utils;
 
 public class NoPauseOnLostFocus extends Module {
  
 	public NoPauseOnLostFocus() {
 		super(Addon.CATEGORY, "no-pause-on-lost-focus", "allow alt+tab without pause");
+		mc.options.pauseOnLostFocus = !isActive();
 	}
 	
 	@Override
 	public void onActivate() {
-		MinecraftClient.getInstance().options.pauseOnLostFocus = false;
+		Utils.mc.options.pauseOnLostFocus = false;
 	}
 	
 	@Override
 	public void onDeactivate() {
-		MinecraftClient.getInstance().options.pauseOnLostFocus = true;
-	}
-	
-	public void init() {
-		mc.options.pauseOnLostFocus = !isActive();
+		Utils.mc.options.pauseOnLostFocus = true;
 	}
 	
 }

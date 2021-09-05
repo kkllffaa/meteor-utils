@@ -25,6 +25,9 @@ public class OADupeDisplay extends DoubleTextHudElement {
 				rightColor = new Color(0f, 1f, 0f, 1f);
 				return String.valueOf(mod.getStage());
 			}
+		}else if (isInEditor()) {
+			visible = true;
+			rightColor = new Color(0f, 0f, 0f, 1f); return "oa dupe info";
 		}else {
 			visible = false;
 			return "";

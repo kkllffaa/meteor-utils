@@ -3,9 +3,12 @@
   "package": "com.franek.meteor_tweaks.mixins",
   "compatibilityLevel": "JAVA_16",
   "client": [
+    "AddCategoriesMixin",
+    "AddSystemsMixin",
     "MiddleClickExtraNotInInv",
     "NoPortalHitboxMixin",
-    "AddSystemsMixin"
+    "WaypointsModuleMixin",
+    "WaypointsSystemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

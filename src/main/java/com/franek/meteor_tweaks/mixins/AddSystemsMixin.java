@@ -4,6 +4,7 @@ import com.franek.meteor_tweaks.Addon;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.System;
 import meteordevelopment.meteorclient.systems.Systems;
+import org.apache.commons.lang3.NotImplementedException;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,19 +26,17 @@ public abstract class AddSystemsMixin {
 	
 	@Shadow
 	private static System<?> add(System<?> system) {
-		throw new AssertionError();
+		throw new NotImplementedException("mixin not working XD");
 	}
 	
 	@Inject(method = "init", at = @At("TAIL"))
 	private static void debil(CallbackInfo ci) {
 		
-		for (System<?> sys : Addon.mySystems) {
-			add(sys);
-		}
+		Addon.mySystems.forEach(AddSystemsMixin::add);
 		
 		for (System<?> system : systems.values()) {
 			if (Addon.mySystems.contains(system)) {
-				MeteorClient.LOG.info("initializing custom systems: " + system.getClass().getSimpleName());
+				MeteorClient.LOG.info("initializing custom system: " + system.getClass().getSimpleName());
 				system.init();
 			}
 		}

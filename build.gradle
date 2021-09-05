@@ -38,5 +38,11 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    //it.options.release = 16
+    it.options.release = 16
+}
+
+jar {
+    manifest {
+        attributes("Main-Class": "com.franek.meteor_tweaks.Main")
+    }
 }
