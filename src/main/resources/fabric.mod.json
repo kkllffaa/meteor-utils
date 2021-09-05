@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "name": "meteor tweaks",
-  "id": "meteor_tweaks",
+  "name": "meteor-utils",
+  "id": "meteor-utils",
   "version": "${version}",
   "description": "adds some modules to meteor client",
   "authors": [
-    "franek"
+    "kkllffaa"
   ],
-  "icon": "assets/meteor_tweaks/icon.png",
+  "icon": "assets/meteor_utils/icon.png",
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "com.franek.meteor_tweaks.Addon"
+      "com.kkllffaa.meteor_utils.Addon"
     ]
   },
   "mixins": [

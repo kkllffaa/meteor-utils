@@ -43,6 +43,6 @@ tasks.withType(JavaCompile).configureEach {
 
 jar {
     manifest {
-        attributes("Main-Class": "com.franek.meteor_tweaks.Main")
+        attributes("Main-Class": "com.franek.meteor_utils.Main")
     }
 }
