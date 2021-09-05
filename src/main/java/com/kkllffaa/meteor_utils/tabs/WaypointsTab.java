@@ -59,7 +59,7 @@ public class WaypointsTab extends Tab {
 					WLabel name = table.add(theme.label(file.getName())).expandX().widget();
 					table.add(theme.button("view")).widget().action = () -> {
 						try {
-							Utils.mc.setScreen(new WaypointsListScreen(theme, new Waypoints().fromTag(NbtIo.read(file)), file, this::initWidget));
+							Utils.mc.setScreen(new WaypointsListScreen(theme, file, this::initWidget));
 						} catch (IOException e) {
 							name.set(name.get()+" ERROR");
 							e.printStackTrace();
@@ -101,10 +101,10 @@ public class WaypointsTab extends Tab {
 	private static class WaypointsListScreen extends WindowScreen {
 		private final Runnable action;
 		private final Waypoints waypoints;
-		public WaypointsListScreen(GuiTheme theme, Waypoints waypoints, File file, Runnable action) {
+		public WaypointsListScreen(GuiTheme theme, File file, Runnable action) throws IOException {
 			super(theme, file.getName());
 			this.action = action;
-			this.waypoints = waypoints;
+			this.waypoints = new Waypoints().fromTag(NbtIo.read(file));
 			
 			
 			WHorizontalList horizontalList = add(theme.horizontalList()).expandX().widget();
