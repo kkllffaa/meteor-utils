@@ -1,23 +1,23 @@
 # Meteor Utils
 
 ### Modules:  
-- Advenced tooltips
-- No pause on lost focus
-- Auto farm
-- Better book bot (capable to write long file to books)
+- Advenced tooltips (built in minecraft but now toggleable from modules)
+- No pause on lost focus (built in minecraft but now toggleable from modules)
+- Auto farm (using bonemeal)
+- Better book bot (capable to write long file to multiple books, can continue after game restat)
 - No portal hitbox
 - Open anarchy auto dupe (with hud to display current state)
-- Third Hand
+- Third Hand (place obi when holding sword)
 
 ### Commands:
 - Add waypoint
-- Disconnect (usefull in macros etc.)
-- Echest preview
+- Disconnect (usefull??? in macros etc.)
+- Echest preview (useless but now u can see echest without echest)
 
 ### Other:
 - Middleclick extra dont throw pearls when in inventory 
-- Waypoints browser (to view, edit and delete all waypoints with no need to join server)
-- Profiles widget in modules screen
-- Elytra durability and Baritone process huds
+- Waypoints browser (to view, edit and delete waypoints without joining server)
+- Profiles widget in modules screen (like in meteor 4.2)
+- Elytra durability and Baritone active task huds
 
 https://user-images.githubusercontent.com/68471730/132132642-6a38bfed-fe86-4335-8780-6bff02036bcf.mp4
