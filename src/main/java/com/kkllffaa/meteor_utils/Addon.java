@@ -3,7 +3,6 @@ package com.kkllffaa.meteor_utils;
 import com.kkllffaa.meteor_utils.commands.AddWaypoint;
 import com.kkllffaa.meteor_utils.commands.Disconnect;
 import com.kkllffaa.meteor_utils.commands.EchestPreview;
-import com.kkllffaa.meteor_utils.commands.Test;
 import com.kkllffaa.meteor_utils.hud.BaritoneProcess;
 import com.kkllffaa.meteor_utils.hud.ElytraDurability;
 import com.kkllffaa.meteor_utils.hud.OADupeDisplay;
@@ -56,7 +55,7 @@ public class Addon extends MeteorAddon {
 		Commands.get().add(new EchestPreview());
 		Commands.get().add(new AddWaypoint());
 		Commands.get().add(new Disconnect());
-		Commands.get().add(new Test());
+		//Commands.get().add(new Test());
 		
 		// Modules
 		Modules.get().add(new ThirdHand());
@@ -66,6 +65,7 @@ public class Addon extends MeteorAddon {
 		Modules.get().add(new BetterBookBot());
 		Modules.get().add(new NoPauseOnLostFocus());
 		Modules.get().add(new AdvencedTooltips());
+		Modules.get().add(new EchestSave());
 
 		
 		//HUD

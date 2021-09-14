@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AddCategoriesMixin extends WContainer {
 	
 	@Inject(method = "init", at = @At("TAIL"))
-	private void addprofileswidget(CallbackInfo ci) {
+	private void addCustomWidgets(CallbackInfo ci) {
 		Addon.myWidgets.forEach(s -> s.accept(theme, this));
 	}
 }

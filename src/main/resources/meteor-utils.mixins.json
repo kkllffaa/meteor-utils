@@ -7,6 +7,9 @@
     "AddSystemsMixin",
     "MiddleClickExtraNotInInv",
     "NoPortalHitboxMixin",
+    "PlayerEntityRendererMixin",
+    "RotatingCubeMapRendererAccessor",
+    "TitleScreenMixin",
     "WaypointsModuleMixin",
     "WaypointsSystemMixin"
   ],

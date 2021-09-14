@@ -15,7 +15,7 @@
     ]
   },
   "mixins": [
-    "meteor_tweaks.mixins.json"
+    "meteor-utils.mixins.json"
   ],
   "depends": {
     "java": ">=16",

@@ -18,10 +18,9 @@ import java.util.Map;
 @Mixin(value = Systems.class, remap = false)
 public abstract class AddSystemsMixin {
 	
-	@SuppressWarnings("rawtypes")
 	@Final
 	@Shadow
-	private static final Map<Class<? extends System>, System<?>> systems = new HashMap<>();
+	private static final Map<Class<? extends System<?>>, System<?>> systems = new HashMap<>();
 	
 	
 	@Shadow
@@ -30,7 +29,7 @@ public abstract class AddSystemsMixin {
 	}
 	
 	@Inject(method = "init", at = @At("TAIL"))
-	private static void debil(CallbackInfo ci) {
+	private static void addCustomSystems(CallbackInfo ci) {
 		
 		Addon.mySystems.forEach(AddSystemsMixin::add);
 		

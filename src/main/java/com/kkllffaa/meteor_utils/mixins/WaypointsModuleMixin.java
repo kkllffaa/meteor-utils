@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = WaypointsModule.class,remap = false)
-public class WaypointsModuleMixin {
+public abstract class WaypointsModuleMixin {
 	
 	@Shadow @Final private SettingGroup sgDeathPosition;
 	

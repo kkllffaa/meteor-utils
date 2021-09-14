@@ -13,7 +13,7 @@ import static meteordevelopment.meteorclient.utils.Utils.mc;
 @Mixin(value = MiddleClickExtra.class, remap = false)
 public abstract class MiddleClickExtraNotInInv {
 	@Inject(method = "onMouseButton", at = @At("HEAD"), cancellable = true)
-	private void debil(MouseButtonEvent event, CallbackInfo ci){
+	private void cancelIfInInventory(MouseButtonEvent event, CallbackInfo ci){
 		if (mc.currentScreen != null) ci.cancel();
 	}
 }
