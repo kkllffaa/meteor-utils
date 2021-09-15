@@ -8,6 +8,7 @@
 - No portal hitbox
 - Open anarchy auto dupe (with hud to display current state)
 - Third Hand (place obi when holding sword)
+- Echest save
 
 ### Commands:
 - Add waypoint
