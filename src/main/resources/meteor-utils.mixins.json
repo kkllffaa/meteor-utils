@@ -5,6 +5,7 @@
   "client": [
     "AddCategoriesMixin",
     "AddSystemsMixin",
+    "EchestMemoryMixin",
     "MiddleClickExtraNotInInv",
     "NoPortalHitboxMixin",
     "PlayerEntityRendererMixin",
