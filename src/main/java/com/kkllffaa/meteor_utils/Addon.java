@@ -48,7 +48,7 @@ public class Addon extends MeteorAddon {
 		LOG.info("initializing meteor utils addon");
 		
 		
-		MeteorClient.EVENT_BUS.registerLambdaFactory("com.kkllffaa.meteor-utils", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
+		MeteorClient.EVENT_BUS.registerLambdaFactory("com.kkllffaa.meteor_utils", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 		
 		
 		// Commands
