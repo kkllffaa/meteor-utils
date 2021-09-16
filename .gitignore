@@ -4,6 +4,7 @@
 build/
 out/
 classes/
+src/main/resources/assets/meteor-utils/a.png
 
 # eclipse
 

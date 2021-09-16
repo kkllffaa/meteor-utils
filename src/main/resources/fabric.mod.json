@@ -7,7 +7,7 @@
   "authors": [
     "kkllffaa"
   ],
-  "icon": "assets/meteor_utils/icon.png",
+  "icon": "assets/meteor-utils/icon.png",
   "environment": "client",
   "entrypoints": {
     "meteor": [
