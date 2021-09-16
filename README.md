@@ -21,5 +21,6 @@
 - Profiles widget in modules screen (like in meteor 4.2)
 - Elytra durability and Baritone active task huds
 - Player model dont disappear when flying with elytra at high speed (https://github.com/TheRandomLabs/RandomPatches)
+- Option to dont save stashes when near waypoints or other stashes
 
 https://user-images.githubusercontent.com/68471730/132132642-6a38bfed-fe86-4335-8780-6bff02036bcf.mp4
