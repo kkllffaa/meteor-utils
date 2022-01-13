@@ -2,11 +2,12 @@
 //file:noinspection JCenterRepository
 pluginManagement {
     repositories {
-        jcenter()
+        //jcenter()
         maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
+        mavenCentral()
         gradlePluginPortal()
     }
 }

@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.kkllffaa.meteor_utils.mixins",
+  "package": "com.kkllffaa.meteorutils.mixins",
   "compatibilityLevel": "JAVA_16",
   "client": [
     "AddCategoriesMixin",

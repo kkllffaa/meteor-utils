@@ -11,15 +11,15 @@
   "environment": "client",
   "entrypoints": {
     "meteor": [
-      "com.kkllffaa.meteor_utils.Addon"
+      "com.kkllffaa.meteorutils.Addon"
     ]
   },
   "mixins": [
     "meteor-utils.mixins.json"
   ],
   "depends": {
-    "java": ">=16",
-    "minecraft": ">=1.17.1",
-    "meteor-client": ">=0.4.5"
+    "java": ">=17",
+    "minecraft": "1.18.x",
+    "meteor-client": ">=0.4.7-1"
   }
 }

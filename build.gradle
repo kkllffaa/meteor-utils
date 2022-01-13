@@ -2,11 +2,10 @@
 //file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
 plugins {
-    id 'fabric-loom' version '0.9-SNAPSHOT'
-    id 'maven-publish'
+    id 'fabric-loom' version '0.10-SNAPSHOT'
 }
 
-sourceCompatibility = targetCompatibility = JavaVersion.VERSION_16
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -17,21 +16,29 @@ repositories {
         name = "jitpack"
         url = "https://jitpack.io"
     }
+    maven {
+        name = "meteor-maven"
+        url = "https://maven.meteordev.org/releases"
+    }
+    maven {
+        name = "meteor-maven-snapshots"
+        url = "https://maven.meteordev.org/snapshots"
+    }
 }
+
 
 dependencies {
     // Minecraft
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_version}:v2"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Meteor
-    modImplementation "com.github.MeteorDevelopment:meteor-client:v0.4.5"
+    //modImplementation "meteordevelopment:meteor-client:SNAPSHOT"
+    modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
 }
 
 processResources {
-    inputs.property "version", project.version
-
     filesMatching("fabric.mod.json") {
         expand "version": project.version
     }
@@ -39,6 +46,5 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    it.options.release = 16
 }
 
