@@ -1,6 +1,8 @@
 //file:noinspection GroovyUnusedAssignment
 //file:noinspection GroovyAssignabilityCheck
 //file:noinspection GroovyAccessibility
+//file:noinspection GrDeprecatedAPIUsage
+//file:noinspection JCenterRepository
 plugins {
     id 'fabric-loom' version '0.10-SNAPSHOT'
 }
@@ -12,6 +14,7 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+    jcenter()
     maven {
         name = "jitpack"
         url = "https://jitpack.io"
