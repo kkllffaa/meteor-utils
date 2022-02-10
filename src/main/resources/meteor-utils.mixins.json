@@ -10,6 +10,7 @@
     "NoPortalHitboxMixin",
     "PlayerEntityRendererMixin",
     "RotatingCubeMapRendererAccessor",
+    "ShulkerBoxScreenMixin",
     "StashFinderMixin",
     "TitleScreenMixin",
     "WaypointsModuleMixin",

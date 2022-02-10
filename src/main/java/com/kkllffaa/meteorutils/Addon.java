@@ -66,6 +66,7 @@ public class Addon extends MeteorAddon {
 		Modules.get().add(new NoPauseOnLostFocus());
 		Modules.get().add(new AdvencedTooltips());
 		Modules.get().add(new EchestSave());
+		Modules.get().add(new ShulkerDupe());
 		//Modules.get().add(new CustomTitleScreen());
 
 		
