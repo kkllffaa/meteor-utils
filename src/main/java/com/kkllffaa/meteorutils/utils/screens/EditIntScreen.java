@@ -16,13 +16,16 @@ public class EditIntScreen extends WindowScreen {
 		buttons.add(theme.button("save")).expandX().widget().action = () -> {
 			if (canbynegative ? MyUtils.isUint(textBox.get()) : MyUtils.isInt(textBox.get())) {
 				function.accept(MyUtils.getInt(textBox.get()));
-				onClose();
+				close();
+				//onClose();
 			}else if (textBox.get().isEmpty()) {
 				function.accept(0);
-				onClose();
+				close();
+				//onClose();
 			}
 		};
-		buttons.add(theme.button("cancel")).expandX().widget().action = this::onClose;
+		//buttons.add(theme.button("cancel")).expandX().widget().action = this::onClose;
+		buttons.add(theme.button("cancel")).expandX().widget().action = this::close;
 	}
 	
 	@Override

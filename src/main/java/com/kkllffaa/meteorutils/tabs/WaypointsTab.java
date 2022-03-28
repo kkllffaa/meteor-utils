@@ -119,12 +119,14 @@ public class WaypointsTab extends Tab {
 					NbtIo.write(waypoints.toTag(), file);
 				} catch (IOException e) {
 					e.printStackTrace();
-					onClose();
+					close();
+					//onClose();
 				}
 			};
 			horizontalList.add(theme.button("delete")).expandX().widget().action = () -> {
 				file.delete();
-				onClose();
+				close();
+				//onClose();
 			};
 			
 			
