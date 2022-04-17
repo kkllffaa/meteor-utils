@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.File;
-import java.util.List;
+import java.util.Map;
 
 @Mixin(value = Waypoints.class, remap = false)
 public abstract class WaypointsSystemMixin {
-	@Shadow public List<Waypoint> waypoints;
+	@Shadow public Map<String, Waypoint> waypoints;
 	
 	@Shadow public abstract File getFile();
 	
