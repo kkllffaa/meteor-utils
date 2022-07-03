@@ -54,7 +54,7 @@ public class MyShader {
 
     private String read(String path, boolean fromdisk) {
         try {
-            return IOUtils.toString(mc.getResourceManager().getResource(new Identifier("meteor-utils", path)).getInputStream(), StandardCharsets.UTF_8);
+            return IOUtils.toString(mc.getResourceManager().getResource(new Identifier("meteor-utils", path)).get().getInputStream(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return "";

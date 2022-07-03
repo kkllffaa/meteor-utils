@@ -277,20 +277,20 @@ public class BetterBookBot extends Module {
 		
 		
 		if (showiterator.get()) {
-			MutableText message = new LiteralText("");
-			message.append(new LiteralText("iterator: ")).append(new LiteralText(String.valueOf(iterator))
+			MutableText message = Text.literal("");
+			message.append(Text.literal("iterator: ")).append(Text.literal(String.valueOf(iterator))
 					.setStyle(Style.EMPTY
 							.withFormatting(Formatting.UNDERLINE, Formatting.RED)
 							.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(iterator)))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("COPY")))
+							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))
 					)
 			);
-			message.append(new LiteralText("     "));
-			message.append(new LiteralText("bookcount: ")).append(new LiteralText(String.valueOf(bookCount))
+			message.append(Text.literal("     "));
+			message.append(Text.literal("bookcount: ")).append(Text.literal(String.valueOf(bookCount))
 					.setStyle(Style.EMPTY
 							.withFormatting(Formatting.UNDERLINE, Formatting.RED)
 							.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(bookCount)))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new LiteralText("COPY")))
+							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))
 					)
 			);
 			info(message);

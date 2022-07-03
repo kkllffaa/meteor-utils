@@ -282,13 +282,15 @@ public class OpenAnarchyAutoDupe extends Module {
 						return;
 					}
 					
-					
+					info(String.valueOf(pos));
 					BlockUtils.place(pos.offset(b.get(Properties.FACING), 1),
 							Hand.MAIN_HAND, frames.slot(),
 							false, 0, true, false, false);
 					
 					
 				}
+				info("");
+				
 				timer = 0;
 				stage = Stage.Waitforframes;
 			}

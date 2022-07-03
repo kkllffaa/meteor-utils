@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +32,7 @@ public abstract class ShulkerBoxScreenMixin extends HandledScreen<ShulkerBoxScre
 						y + 3,
 						60,
 						12,
-						new LiteralText("DUPE ONE"),
+						Text.literal("DUPE ONE"),
 						button -> Modules.get().get(ShulkerDupe.class).shoulddupe = ShulkerDupe.ShouldDupe.ONE
 				));
 				addDrawableChild(new ContainerButtonWidget(
@@ -41,7 +40,7 @@ public abstract class ShulkerBoxScreenMixin extends HandledScreen<ShulkerBoxScre
 						y + 20,
 						60,
 						12,
-						new LiteralText("DUPE ALL"),
+						Text.literal("DUPE ALL"),
 						button -> Modules.get().get(ShulkerDupe.class).shoulddupe = ShulkerDupe.ShouldDupe.ALL
 				));
 			}

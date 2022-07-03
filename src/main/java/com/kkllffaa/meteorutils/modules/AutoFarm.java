@@ -44,7 +44,7 @@ public class AutoFarm extends Module {
 				if (state.get(Properties.AGE_7) == Properties.AGE_7_MAX) {
 					BlockUtils.breakBlock(pos, true);
 				}else if (MyInvUtils.switchtoitem(Items.BONE_MEAL, true, true, this)) {
-					mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(mc.player.getPos(), Direction.UP, pos, false));
+					mc.interactionManager.interactBlock(mc.player, Hand.MAIN_HAND, new BlockHitResult(mc.player.getPos(), Direction.UP, pos, false));
 				}else toggle();
 			}else if (state.isAir() && MyInvUtils.switchtoitem(Items.WHEAT_SEEDS, true, true, this)) {
 				BlockUtils.place(pos, Hand.MAIN_HAND, mc.player.getInventory().selectedSlot, false, 0, true, false, false);
