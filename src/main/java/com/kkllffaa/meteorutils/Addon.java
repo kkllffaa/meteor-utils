@@ -15,9 +15,9 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import meteordevelopment.meteorclient.gui.widgets.containers.WContainer;
 import meteordevelopment.meteorclient.systems.System;
-import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.commands.Commands;
-import meteordevelopment.meteorclient.systems.hud.HUD;
+import meteordevelopment.meteorclient.systems.hud.Hud;
+import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.item.Items;
@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 public class Addon extends MeteorAddon {
 	public static final Logger LOG = LogManager.getLogger();
 	public static final Category CATEGORY = new Category("meteor-utils", Items.ACACIA_BOAT.getDefaultStack());
-	
+	public static final HudGroup HUD_GROUP = new HudGroup("meteor-utils");
 	
 	
 	
@@ -71,10 +71,9 @@ public class Addon extends MeteorAddon {
 
 		
 		//HUD
-		HUD hud = Systems.get(HUD.class);
-		hud.elements.add(new BaritoneProcess(hud));
-		hud.elements.add(new OADupeDisplay(hud));
-		hud.elements.add(new ElytraDurability(hud));
+		Hud.get().register(BaritoneProcess.INFO);
+		Hud.get().register(OADupeDisplay.INFO);
+		Hud.get().register(ElytraDurability.INFO);
 		
 		//Tabs
 		Tabs.add(new WaypointsTab());
