@@ -33,13 +33,11 @@ public class ProfilesWidget {
 		// Profiles
 		for (Profile profile : Profiles.get()) {
 			//name and tooltip
-			table.add(theme.label(profile.name)).expandCellX().widget().tooltip =
-							MyUtils.printif("accounts ",	profile.accounts)+
-							MyUtils.printif("config ",	profile.config)+
-							MyUtils.printif("friends ",	profile.friends)+
-							MyUtils.printif("macros ",	profile.macros)+
-							MyUtils.printif("modules ",	profile.modules)+
-							MyUtils.printif("waypoints",	profile.waypoints);
+			table.add(theme.label(profile.name.get())).expandCellX().widget().tooltip =
+							MyUtils.printif("hud ",		profile.hud.get())+
+							MyUtils.printif("macros ",	profile.macros.get())+
+							MyUtils.printif("modules ",	profile.modules.get())+
+							MyUtils.printif("waypoints",	profile.waypoints.get());
 			
 			//save
 			table.add(theme.button("Save")).widget().action = profile::save;

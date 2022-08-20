@@ -48,7 +48,7 @@ public class Addon extends MeteorAddon {
 		LOG.info("initializing meteor utils addon");
 
 		
-		MeteorClient.EVENT_BUS.registerLambdaFactory("com.kkllffaa.meteorutils", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
+		//MeteorClient.EVENT_BUS.registerLambdaFactory("com.kkllffaa.meteorutils", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 		
 		
 		// Commands
@@ -85,5 +85,10 @@ public class Addon extends MeteorAddon {
 	@Override
 	public void onRegisterCategories() {
 		Modules.registerCategory(CATEGORY);
+	}
+	
+	@Override
+	public String getPackage() {
+		return "com.kkllffaa.meteorutils";
 	}
 }

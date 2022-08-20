@@ -142,11 +142,11 @@ public class WaypointsTab extends Tab {
 			
 			for (Waypoint waypoint : waypoints) {
 				
-				table.add(theme.label(waypoint.name));
+				table.add(theme.label(waypoint.name.get()));
 				table.add(new WIcon(waypoint));
-				table.add(theme.label(waypoint.actualDimension.name()));
+				table.add(theme.label(waypoint.dimension.get().name()));
 				table.add(theme.verticalSeparator()).expandWidgetY();
-				table.add(theme.label(" X: "+waypoint.x+" Y: "+waypoint.y+" Z: "+waypoint.z+" "));
+				table.add(theme.label(" X: "+waypoint.pos.get().getX()+" Y: "+waypoint.pos.get().getY()+" Z: "+waypoint.pos.get().getZ()+" "));
 				table.add(theme.verticalSeparator()).expandWidgetY();
 				table.add(theme.button("Remove")).widget().action = () -> {
 					waypoints.remove(waypoint);

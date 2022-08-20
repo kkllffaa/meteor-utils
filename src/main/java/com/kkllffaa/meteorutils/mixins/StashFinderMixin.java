@@ -76,7 +76,7 @@ public abstract class StashFinderMixin extends Module {
 		}
 		
 		for (Waypoint waypoint : Waypoints.get()) {
-			if (waypoint.actualDimension == Dimension.Overworld && new Vec3i(waypoint.x, waypoint.y, 0).isWithinDistance(event.chunk.getPos().getCenterAtY(0), ignoreWaypointDistance.get())) {
+			if (waypoint.dimension.get() == Dimension.Overworld && new Vec3i(waypoint.pos.get().getX(), waypoint.pos.get().getY(), 0).isWithinDistance(event.chunk.getPos().getCenterAtY(0), ignoreWaypointDistance.get())) {
 				ci.cancel();
 				return;
 			}
