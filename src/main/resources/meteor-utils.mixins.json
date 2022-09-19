@@ -8,7 +8,6 @@
     "EchestMemoryMixin",
     "MiddleClickExtraNotInInv",
     "NoPortalHitboxMixin",
-    "PlayerEntityRendererMixin",
     "RotatingCubeMapRendererAccessor",
     "ShulkerBoxScreenMixin",
     "StashFinderMixin",
