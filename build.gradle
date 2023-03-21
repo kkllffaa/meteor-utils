@@ -4,7 +4,7 @@
 //file:noinspection GrDeprecatedAPIUsage
 //file:noinspection JCenterRepository
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
 }
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
@@ -39,6 +39,7 @@ dependencies {
     // Meteor
     //modImplementation "meteordevelopment:meteor-client:SNAPSHOT"
     modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
+	modImplementation "baritone:fabric:${project.minecraft_version}-SNAPSHOT"
 }
 
 processResources {

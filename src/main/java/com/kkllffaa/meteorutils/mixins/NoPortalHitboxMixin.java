@@ -18,6 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class NoPortalHitboxMixin {
 	@Inject(method = "getOutlineShape",at = @At("HEAD"), cancellable = true)
 	private void getshape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir){
+		Modules modules = Modules.get();
+		if (modules == null) return;
 		if (Modules.get().isActive(NoPortalHitbox.class)){
 			cir.setReturnValue(VoxelShapes.empty());
 		}

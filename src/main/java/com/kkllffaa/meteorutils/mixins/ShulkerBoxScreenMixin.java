@@ -2,9 +2,9 @@ package com.kkllffaa.meteorutils.mixins;
 
 import com.kkllffaa.meteorutils.modules.ShulkerDupe;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import meteordevelopment.meteorclient.utils.render.ContainerButtonWidget;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.ShulkerBoxScreen;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.text.Text;
@@ -27,22 +27,18 @@ public abstract class ShulkerBoxScreenMixin extends HandledScreen<ShulkerBoxScre
 			f = true;
 			System.out.println("debil");
 			if (Modules.get().isActive(ShulkerDupe.class)) {
-				addDrawableChild(new ContainerButtonWidget(
-						x - 62,
-						y + 3,
-						60,
-						12,
-						Text.literal("DUPE ONE"),
-						button -> Modules.get().get(ShulkerDupe.class).shoulddupe = ShulkerDupe.ShouldDupe.ONE
-				));
-				addDrawableChild(new ContainerButtonWidget(
-						x - 62,
-						y + 20,
-						60,
-						12,
-						Text.literal("DUPE ALL"),
-						button -> Modules.get().get(ShulkerDupe.class).shoulddupe = ShulkerDupe.ShouldDupe.ALL
-				));
+				addDrawableChild(new ButtonWidget.Builder(Text.literal("DUPE ONE"),
+						button -> Modules.get().get(ShulkerDupe.class).shoulddupe = ShulkerDupe.ShouldDupe.ONE)
+						.position(x - 62, y + 3)
+						.size(60, 12)
+						.build()
+				);
+				addDrawableChild(new ButtonWidget.Builder(Text.literal("DUPE ALL"),
+						button -> Modules.get().get(ShulkerDupe.class).shoulddupe = ShulkerDupe.ShouldDupe.ALL)
+						.position(x - 62, y + 20)
+						.size(60, 12)
+						.build()
+				);
 			}
 		}
 	}
