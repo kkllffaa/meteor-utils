@@ -15,7 +15,7 @@ import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.tabs.Tabs;
 import meteordevelopment.meteorclient.gui.widgets.containers.WContainer;
 import meteordevelopment.meteorclient.systems.System;
-import meteordevelopment.meteorclient.systems.commands.Commands;
+import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
@@ -33,30 +33,30 @@ public class Addon extends MeteorAddon {
 	public static final Logger LOG = LogManager.getLogger();
 	public static final Category CATEGORY = new Category("meteor-utils", Items.ACACIA_BOAT.getDefaultStack());
 	public static final HudGroup HUD_GROUP = new HudGroup("meteor-utils");
-	
-	
-	
+
+
+
 	public static final List<System<?>> mySystems = new ArrayList<>(); //add custom systems here
 	public static final List<BiConsumer<GuiTheme, WContainer>> myWidgets = new ArrayList<>(); //add custom widgets in modules hud here
-	
+
 	static {
 		myWidgets.add(ProfilesWidget::create);
 	}
-	
+
 	@Override
 	public void onInitialize() {
 		LOG.info("initializing meteor utils addon");
 
-		
+
 		//MeteorClient.EVENT_BUS.registerLambdaFactory("com.kkllffaa.meteorutils", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
-		
-		
+
+
 		// Commands
-		Commands.get().add(new EchestPreview());
-		Commands.get().add(new AddWaypoint());
-		Commands.get().add(new Disconnect());
+		Commands.add(new EchestPreview());
+		Commands.add(new AddWaypoint());
+		Commands.add(new Disconnect());
 		//Commands.get().add(new Test());
-		
+
 		// Modules
 		Modules.get().add(new ThirdHand());
 		Modules.get().add(new NoPortalHitbox());
@@ -68,23 +68,23 @@ public class Addon extends MeteorAddon {
 		Modules.get().add(new EchestSave());
 		Modules.get().add(new ShulkerDupe());
 
-		
+
 		//HUD
 		Hud.get().register(BaritoneProcess.INFO);
 		Hud.get().register(OADupeDisplay.INFO);
 		Hud.get().register(ElytraDurability.INFO);
-		
+
 		//Tabs
 		Tabs.add(new WaypointsTab());
-		
-		
+
+
 	}
-	
+
 	@Override
 	public void onRegisterCategories() {
 		Modules.registerCategory(CATEGORY);
 	}
-	
+
 	@Override
 	public String getPackage() {
 		return "com.kkllffaa.meteorutils";
