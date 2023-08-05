@@ -1,7 +1,7 @@
 package com.kkllffaa.meteorutils.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import meteordevelopment.meteorclient.systems.commands.Command;
+import meteordevelopment.meteorclient.commands.Command;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.player.EChestMemory;
 import net.minecraft.command.CommandSource;

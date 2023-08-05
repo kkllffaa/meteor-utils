@@ -81,8 +81,8 @@ public class ElytraDurability extends HudElement {
 				Renderer2D.COLOR.quad(x, y, (getWidth() * percentage), getHeight(), red, green, green, red);
 				Renderer2D.COLOR.render(null);
 			}
-			
-			RenderUtils.drawItem(elytra, (int) x, (int) y, scale.get(), false);
+
+			RenderUtils.drawItem(renderer.drawContext, elytra, (int) x, (int) y, scale.get().floatValue(), false);
 			
 			TextRenderer textRenderer = TextRenderer.get();
 			
