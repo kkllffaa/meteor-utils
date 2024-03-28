@@ -67,16 +67,16 @@ public abstract class StashFinderMixin extends Module {
 	private void debil(ChunkDataEvent event, CallbackInfo ci) {
 		
 		for (StashFinder.Chunk chunk : chunks) {
-			if (noMessageWhenEquals.get() && chunk.chunkPos.equals(event.chunk.getPos())) cancelMessage = true;
+			if (noMessageWhenEquals.get() && chunk.chunkPos.equals(event.chunk().getPos())) cancelMessage = true;
 			
-			if (chunk.chunkPos.getChebyshevDistance(event.chunk.getPos()) < ignoreNeighbourDistance.get()) {
+			if (chunk.chunkPos.getChebyshevDistance(event.chunk().getPos()) < ignoreNeighbourDistance.get()) {
 				ci.cancel();
 				return;
 			}
 		}
 		
 		for (Waypoint waypoint : Waypoints.get()) {
-			if (waypoint.dimension.get() == Dimension.Overworld && new Vec3i(waypoint.pos.get().getX(), waypoint.pos.get().getY(), 0).isWithinDistance(event.chunk.getPos().getCenterAtY(0), ignoreWaypointDistance.get())) {
+			if (waypoint.dimension.get() == Dimension.Overworld && new Vec3i(waypoint.pos.get().getX(), waypoint.pos.get().getY(), 0).isWithinDistance(event.chunk().getPos().getCenterAtY(0), ignoreWaypointDistance.get())) {
 				ci.cancel();
 				return;
 			}
