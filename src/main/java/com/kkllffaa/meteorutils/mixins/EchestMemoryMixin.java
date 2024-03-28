@@ -64,7 +64,7 @@ public abstract class EchestMemoryMixin {
 			getSaveFile().getParentFile().mkdir();
 			getSaveFile().createNewFile();
 			
-			NbtIo.write(tag, getSaveFile());
+			NbtIo.write(tag, getSaveFile().toPath());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -77,7 +77,7 @@ public abstract class EchestMemoryMixin {
 		
 		NbtCompound tag = null;
 		try {
-			tag = NbtIo.read(getSaveFile());
+			tag = NbtIo.read(getSaveFile().toPath());
 		} catch (IOException e) {
 			if (!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}

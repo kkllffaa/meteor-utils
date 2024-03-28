@@ -31,11 +31,11 @@ public class ShulkerDupe extends Module {
 		if (mc.player != null && event.packet instanceof PlayerActionC2SPacket actionC2SPacket) {
 			if (actionC2SPacket.getAction() == PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK) {
 				if (shoulddupe == ShouldDupe.ONE) {
-					InvUtils.quickMove().slotId(0);
+					InvUtils.shiftClick().slotId(0);
 					shoulddupe = ShouldDupe.NO;
 				} else if (shoulddupe == ShouldDupe.ALL) {
 					for (int i = 0; i < 27; i++) {
-						InvUtils.quickMove().slotId(i);
+						InvUtils.shiftClick().slotId(i);
 					}
 					shoulddupe = ShouldDupe.NO;
 				}
