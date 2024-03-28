@@ -20,7 +20,7 @@ public class MyInvUtils {
 			}else {
 				FindItemResult empty = InvUtils.findEmpty();
 				if (empty.found() && empty.isHotbar()) {
-					if (quickmove && !(mc.currentScreen instanceof GenericContainerScreen)) InvUtils.quickMove().from(item.slot()).toHotbar(empty.slot());
+					if (quickmove && !(mc.currentScreen instanceof GenericContainerScreen)) InvUtils.shiftClick().from(item.slot()).toHotbar(empty.slot());
 					else InvUtils.move().from(item.slot()).toHotbar(empty.slot());
 					InvUtils.swap(empty.slot(), false);
 					return true;
