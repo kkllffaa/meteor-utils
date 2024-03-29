@@ -110,13 +110,13 @@ public class WaypointsTab extends Tab {
 		public WaypointsListScreen(GuiTheme theme, File file, Runnable action) throws IOException {
 			super(theme, file.getName());
 			this.action = action;
-			this.waypoints = new Waypoints().fromTag(NbtIo.read(file));
+			this.waypoints = new Waypoints().fromTag(NbtIo.read(file.toPath()));
 			
 			
 			WHorizontalList horizontalList = add(theme.horizontalList()).expandX().widget();
 			horizontalList.add(theme.button("save")).expandX().widget().action = () -> {
 				try {
-					NbtIo.write(waypoints.toTag(), file);
+					NbtIo.write(waypoints.toTag(), file.toPath());
 				} catch (IOException e) {
 					e.printStackTrace();
 					close();
