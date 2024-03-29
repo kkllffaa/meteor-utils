@@ -3,7 +3,6 @@ package com.kkllffaa.meteorutils;
 import com.kkllffaa.meteorutils.commands.AddWaypoint;
 import com.kkllffaa.meteorutils.commands.Disconnect;
 import com.kkllffaa.meteorutils.commands.EchestPreview;
-import com.kkllffaa.meteorutils.hud.BaritoneProcess;
 import com.kkllffaa.meteorutils.hud.ElytraDurability;
 import com.kkllffaa.meteorutils.hud.OADupeDisplay;
 import com.kkllffaa.meteorutils.modules.*;
@@ -68,7 +67,6 @@ public class Addon extends MeteorAddon {
 
 		
 		//HUD
-		Hud.get().register(BaritoneProcess.INFO);
 		Hud.get().register(OADupeDisplay.INFO);
 		Hud.get().register(ElytraDurability.INFO);
 		
