@@ -31,13 +31,13 @@ public abstract class EchestMemoryMixin {
 	
 	private static File getSaveFile() {
 		if (!Modules.get().isActive(EchestSave.class)) return null;
-		if (mc.player == null || Utils.getWorldName().isEmpty() || Modules.get().isActive(NameProtect.class)) return null;
+		if (mc.player == null || Utils.getFileWorldName().isEmpty() || Modules.get().isActive(NameProtect.class)) return null;
 		if (mc.isInSingleplayer()) {
-			return new File(new File(loc, "s"), Utils.getWorldName() + ".nbt");
+			return new File(new File(loc, "s"), Utils.getFileWorldName() + ".nbt");
 		}else if (!Modules.get().get(EchestSave.class).respectdifftentnicks.get()){
-			return new File(new File(loc, "all"), Utils.getWorldName() + ".nbt");
+			return new File(new File(loc, "all"), Utils.getFileWorldName() + ".nbt");
 		}else {
-			return new File(new File(loc, mc.player.getGameProfile().getName()), Utils.getWorldName() + ".nbt");
+			return new File(new File(loc, mc.player.getGameProfile().getName()), Utils.getFileWorldName() + ".nbt");
 		}
 	}
 	
