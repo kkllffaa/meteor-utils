@@ -6,12 +6,15 @@ import meteordevelopment.meteorclient.events.game.GameLeftEvent;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.misc.NameProtect;
 import meteordevelopment.meteorclient.utils.Utils;
+import meteordevelopment.meteorclient.utils.misc.NbtUtils;
 import meteordevelopment.meteorclient.utils.player.EChestMemory;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.collection.DefaultedList;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,8 +56,7 @@ public abstract class EchestMemoryMixin {
 		NbtCompound tag = new NbtCompound();
 		NbtList list = new NbtList();
 		for (ItemStack stack : ITEMS) {
-			NbtCompound item = new NbtCompound();
-			list.add(stack.writeNbt(item));
+			list.add(stack.encode(mc.player.getRegistryManager()));
 		}
 		
 		tag.put("items", list);
@@ -72,7 +74,7 @@ public abstract class EchestMemoryMixin {
 	
 	@EventHandler
 	private static void load(GameJoinedEvent event) {
-		if (getSaveFile() == null) return;
+		if (getSaveFile() == null || mc.player == null) return;
 		
 		
 		NbtCompound tag = null;
@@ -89,7 +91,7 @@ public abstract class EchestMemoryMixin {
 		
 		for (int i = 0; i < list.size(); i++) {
 			if (list.get(i) instanceof NbtCompound) {
-				ITEMS.set(i, ItemStack.fromNbt((NbtCompound) list.get(i)));
+				ITEMS.set(i, ItemStack.fromNbtOrEmpty(mc.player.getRegistryManager(), (NbtCompound) list.get(i)));
 			}
 		}
 		

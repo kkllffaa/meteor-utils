@@ -57,17 +57,17 @@ public class Addon extends MeteorAddon {
 		// Modules
 		Modules.get().add(new ThirdHand());
 		Modules.get().add(new NoPortalHitbox());
-		Modules.get().add(new OpenAnarchyAutoDupe());
+		//Modules.get().add(new OpenAnarchyAutoDupe());
 		Modules.get().add(new AutoFarm());
 		Modules.get().add(new BetterBookBot());
 		Modules.get().add(new NoPauseOnLostFocus());
 		Modules.get().add(new AdvencedTooltips());
 		Modules.get().add(new EchestSave());
-		Modules.get().add(new ShulkerDupe());
+		//Modules.get().add(new ShulkerDupe());
 
 		
 		//HUD
-		Hud.get().register(OADupeDisplay.INFO);
+		//Hud.get().register(OADupeDisplay.INFO);
 		Hud.get().register(ElytraDurability.INFO);
 		
 		//Tabs

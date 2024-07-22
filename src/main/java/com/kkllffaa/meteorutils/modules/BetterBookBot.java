@@ -17,6 +17,8 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.WrittenBookContentComponent;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
@@ -261,16 +263,21 @@ public class BetterBookBot extends Module {
 			toggle();
 			info("complete");
 		}
+
+		String title = name.get() + (count.get() ? " #" + bookCount : "");
 		
-		
-		// Write pages NBT
-		NbtList pageNbt = new NbtList();
-		pages.stream().map(NbtString::of).forEach(pageNbt::add);
-		if (!pages.isEmpty()) mc.player.getMainHandStack().setSubNbt("pages", pageNbt);
+		// Write data to book
+		ArrayList<RawFilteredPair<Text>> filteredpages = new ArrayList<>();
+		for (String p : pages) {
+			filteredpages.add(RawFilteredPair.of(Text.of(p)));
+		}
+
+		if (!pages.isEmpty()) mc.player.getMainHandStack().set(DataComponentTypes.WRITTEN_BOOK_CONTENT, new WrittenBookContentComponent(RawFilteredPair.of(title),
+				mc.player.getGameProfile().getName(), 0, filteredpages, true));
 		
 		
 		mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(mc.player.getInventory().selectedSlot, pages, sign.get() ?
-				Optional.of(name.get() + (count.get() ? " #" + bookCount : "")) : Optional.empty()));
+				Optional.of(title) : Optional.empty()));
 		
 		
 		bookCount++;

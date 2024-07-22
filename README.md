@@ -6,7 +6,6 @@
 - Auto farm (using bonemeal)
 - Better book bot (capable to write long file to multiple books, can continue after game restat)
 - No portal hitbox
-- Open anarchy auto dupe (with hud to display current state)
 - Third Hand (place obi when holding sword)
 - Echest save
 
@@ -22,5 +21,3 @@
 - Elytra durability and Baritone active task huds
 - Player model dont disappear when flying with elytra at high speed (https://github.com/TheRandomLabs/RandomPatches)
 - Option to dont save stashes when near waypoints or other stashes
-
-https://user-images.githubusercontent.com/68471730/132132642-6a38bfed-fe86-4335-8780-6bff02036bcf.mp4
