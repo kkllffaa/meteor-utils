@@ -22,6 +22,6 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           automatic_release_tag: "mc_1.21_meteor_0.5.8_ver_1.0"
           prerelease: false
-          title: "Version 1.0 for meteor 0.5.8 and Minecraft 1.22"
+          title: "Version 1.0 for meteor 0.5.8 and Minecraft 1.21"
           files: |
             ./build/libs/*.jar
