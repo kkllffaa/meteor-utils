@@ -129,42 +129,49 @@ public class BetterBookBot extends Module {
 	private void calculatewidget(WVerticalList list, GuiTheme theme) {
 		list.clear();
 		WHorizontalList filebuttons = list.add(theme.horizontalList()).expandX().widget();
-		
-		
-		filebuttons.add(theme.button((file != null) ? file.getName() : "Select File")).padLeft(6).expandX().widget().action = () -> {
-			String path = TinyFileDialogs.tinyfd_openFileDialog(
-					"Select File",
-					new File(MeteorClient.FOLDER, "bookbot.txt").getAbsolutePath(),
-					filters,
-					null,
-					false
-			);
-			if (path != null) {
-				file = new File(path);
-			}else file = null;
-			buildstring();
-			calculatewidget(list, theme);
-		};
+
+		filebuttons.add(theme.button((file != null) ? file.getName() : "Select File")).padLeft(6).expandX()
+				.widget().action = () -> {
+					String path = TinyFileDialogs.tinyfd_openFileDialog(
+							"Select File",
+							new File(MeteorClient.FOLDER, "bookbot.txt").getAbsolutePath(),
+							filters,
+							null,
+							false);
+					if (path != null) {
+						file = new File(path);
+					} else
+						file = null;
+					buildstring();
+					calculatewidget(list, theme);
+				};
 		filebuttons.add(theme.button(GuiRenderer.RESET)).padRight(6).widget().action = () -> {
 			buildstring();
 			calculatewidget(list, theme);
 		};
-		
-		
-		list.add(theme.button("iterator: "+iterator)).padHorizontal(6).expandX().widget().action = () -> mc.setScreen(new EditIntScreen(theme, "iterator", iterator, false, (a) -> {
-			iterator = a;
-			calculatewidget(list, theme);
-		}));
-		list.add(theme.button("count: "+bookCount)).padHorizontal(6).expandX().widget().action = () -> mc.setScreen(new EditIntScreen(theme, "count", bookCount, false, (a) -> {
-			bookCount = a;
-			calculatewidget(list, theme);
-		}));
+
+		list.add(theme.button("iterator: " + iterator)).padHorizontal(6).expandX().widget().action = () -> mc
+				.setScreen(new EditIntScreen(theme, "iterator", iterator, false, (a) -> {
+					iterator = a;
+					calculatewidget(list, theme);
+				}));
+		list.add(theme.button("count: " + bookCount)).padHorizontal(6).expandX().widget().action = () -> mc
+				.setScreen(new EditIntScreen(theme, "count", bookCount, false, (a) -> {
+					bookCount = a;
+					calculatewidget(list, theme);
+				}));
 	}
-	
-	
-	@EventHandler private void onDisconnected(GameLeftEvent event) { if (isActive()) toggle(); }
-	@EventHandler private void onConnected(GameJoinedEvent event) { if (isActive()) toggle(); }
-	
+
+	@EventHandler
+	private void onDisconnected(GameLeftEvent event) {
+		disable();
+	}
+
+	@EventHandler
+	private void onConnected(GameJoinedEvent event) {
+		disable();
+	}
+
 	@Override
 	public void onActivate() {
 		delayTimer = delay.get();
@@ -273,14 +280,14 @@ public class BetterBookBot extends Module {
 			filteredpages.add(RawFilteredPair.of(Text.of(p)));
 		}
 
-		if (!pages.isEmpty()) mc.player.getMainHandStack().set(DataComponentTypes.WRITTEN_BOOK_CONTENT, new WrittenBookContentComponent(RawFilteredPair.of(title),
-				mc.player.getGameProfile().getName(), 0, filteredpages, true));
-		
-		
-		mc.player.networkHandler.sendPacket(new BookUpdateC2SPacket(mc.player.getInventory().selectedSlot, pages, sign.get() ?
-				Optional.of(title) : Optional.empty()));
-		
-		
+		if (!pages.isEmpty())
+			mc.player.getMainHandItem().set(DataComponents.WRITTEN_BOOK_CONTENT,
+					new WrittenBookContent(Filterable.passThrough(title),
+							mc.player.getGameProfile().name(), 0, filteredpages, true));
+
+		mc.player.connection.send(new ServerboundEditBookPacket(mc.player.getInventory().getSelectedSlot(), pages,
+				sign.get() ? Optional.of(title) : Optional.empty()));
+
 		bookCount++;
 
 		if (showiterator.get()) {
@@ -288,18 +295,16 @@ public class BetterBookBot extends Module {
 			message.append(Text.literal("iterator: ")).append(Text.literal(String.valueOf(iterator))
 					.setStyle(Style.EMPTY
 							.withFormatting(Formatting.UNDERLINE, Formatting.RED)
-							.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(iterator)))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))
-					)
-			);
+							.withClickEvent(
+									new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(iterator)))
+							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))));
 			message.append(Text.literal("     "));
 			message.append(Text.literal("bookcount: ")).append(Text.literal(String.valueOf(bookCount))
 					.setStyle(Style.EMPTY
 							.withFormatting(Formatting.UNDERLINE, Formatting.RED)
-							.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(bookCount)))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))
-					)
-			);
+							.withClickEvent(
+									new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(bookCount)))
+							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))));
 			info(message);
 		}
 	}
@@ -332,9 +337,9 @@ public class BetterBookBot extends Module {
 	}
 
 	@Override
-	public NbtCompound toTag() {
-		NbtCompound tag = super.toTag();
-		
+	public CompoundTag toTag() {
+		CompoundTag tag = super.toTag();
+
 		if (file != null && file.exists()) {
 			tag.putString("file", file.getAbsolutePath());
 		}
@@ -343,9 +348,9 @@ public class BetterBookBot extends Module {
 	}
 
 	@Override
-	public Module fromTag(NbtCompound tag) {
+	public Module fromTag(CompoundTag tag) {
 		if (tag.contains("file")) {
-			file = new File(tag.getString("file"));
+			file = new File(tag.getString("file").get());
 			buildstring();
 		}
 
