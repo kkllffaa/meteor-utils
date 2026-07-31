@@ -1,36 +1,5 @@
 package com.kkllffaa.meteorutils.modules;
 
-import com.kkllffaa.meteorutils.Addon;
-import com.kkllffaa.meteorutils.utils.MyInvUtils;
-import com.kkllffaa.meteorutils.utils.screens.EditIntScreen;
-import meteordevelopment.meteorclient.MeteorClient;
-import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
-import meteordevelopment.meteorclient.events.game.GameLeftEvent;
-import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.gui.GuiTheme;
-import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
-import meteordevelopment.meteorclient.gui.widgets.WWidget;
-import meteordevelopment.meteorclient.gui.widgets.containers.WHorizontalList;
-import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
-import meteordevelopment.meteorclient.mixin.TextHandlerAccessor;
-import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.world.TickRate;
-import meteordevelopment.orbit.EventHandler;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.WrittenBookContentComponent;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
-import net.minecraft.network.packet.c2s.play.BookUpdateC2SPacket;
-import net.minecraft.text.*;
-import net.minecraft.util.Formatting;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryUtil;
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
-
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,50 +9,77 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
+
+import com.kkllffaa.meteorutils.Addon;
+import com.kkllffaa.meteorutils.utils.MyInvUtils;
+import com.kkllffaa.meteorutils.utils.screens.EditIntScreen;
+
+import meteordevelopment.meteorclient.MeteorClient;
+import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
+import meteordevelopment.meteorclient.events.game.GameLeftEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.gui.GuiTheme;
+import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
+import meteordevelopment.meteorclient.gui.widgets.WWidget;
+import meteordevelopment.meteorclient.gui.widgets.containers.WHorizontalList;
+import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
+import meteordevelopment.meteorclient.settings.BoolSetting;
+import meteordevelopment.meteorclient.settings.IntSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.StringSetting;
+import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.world.TickRate;
+import meteordevelopment.orbit.EventHandler;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ServerboundEditBookPacket;
+import net.minecraft.server.network.Filterable;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.WrittenBookContent;
+
 public class BetterBookBot extends Module {
+
 	private final SettingGroup sgGeneral = settings.getDefaultGroup();
-	
-	//region settings
-	
+
 	private final Setting<Boolean> sign = sgGeneral.add(new BoolSetting.Builder()
 			.name("sign")
 			.description("Whether to sign written books.")
 			.defaultValue(true)
-			.build()
-	);
-	
+			.build());
+
 	private final Setting<String> name = sgGeneral.add(new StringSetting.Builder()
 			.name("name")
 			.description("The name you want to give your books.")
 			.defaultValue("Meteor on Crack!")
 			.visible(sign::get)
-			.build()
-	);
-	
+			.build());
+
 	private final Setting<Boolean> count = sgGeneral.add(new BoolSetting.Builder()
 			.name("append-count")
 			.description("Whether to append the number of the book to the title.")
 			.defaultValue(true)
 			.visible(sign::get)
-			.build()
-	);
-	
+			.build());
+
 	private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
 			.name("delay")
 			.description("The amount of delay between writing books.")
 			.defaultValue(20)
 			.min(1)
 			.sliderMin(1).sliderMax(200)
-			.build()
-	);
-	
+			.build());
+
 	private final Setting<Boolean> filltomax = sgGeneral.add(new BoolSetting.Builder()
 			.name("fill")
 			.description("Whether to fill book or limit characters in one book.")
 			.defaultValue(true)
-			.build()
-	);
-	
+			.build());
+
 	private final Setting<Integer> numberofcharacters = sgGeneral.add(new IntSetting.Builder()
 			.name("characters")
 			.description("The amount of characters to write in each book.")
@@ -91,50 +87,45 @@ public class BetterBookBot extends Module {
 			.min(1).max(100000)
 			.sliderMin(1).sliderMax(100000)
 			.visible(() -> !filltomax.get())
-			.build()
-	);
-	
+			.build());
+
 	private final Setting<Boolean> showiterator = sgGeneral.add(new BoolSetting.Builder()
 			.name("showiterator")
 			.description("Whether to show iterator after writing book.")
 			.defaultValue(true)
-			.build()
-	);
-	
-	//endregion
-	
+			.build());
+
 	char[] filechars = null;
-	
+
 	private File file = new File(MeteorClient.FOLDER, "bookbot.txt");
 	private final PointerBuffer filters;
-	
+
 	private int delayTimer;
-	
+
 	public int iterator, bookCount;
-	
+
 	public BetterBookBot() {
 		super(Addon.CATEGORY, "file-book-bot", "book bot that can write file to multiple books");
-		
+
 		if (!file.exists()) {
 			file = null;
 		}
-		
+
 		filters = BufferUtils.createPointerBuffer(1);
-		
+
 		ByteBuffer txtFilter = MemoryUtil.memASCII("*.txt");
-		
+
 		filters.put(txtFilter);
 		filters.rewind();
 	}
-	
-	
+
 	@Override
 	public WWidget getWidget(GuiTheme theme) {
 		WVerticalList list = theme.verticalList();
 		calculatewidget(list, theme);
 		return list;
 	}
-	
+
 	private void calculatewidget(WVerticalList list, GuiTheme theme) {
 		list.clear();
 		WHorizontalList filebuttons = list.add(theme.horizontalList()).expandX().widget();
@@ -178,12 +169,14 @@ public class BetterBookBot extends Module {
 	public void onActivate() {
 		delayTimer = delay.get();
 	}
-	
+
 	@EventHandler
 	private void onTick(TickEvent.Post event) {
-		
-		if (mc.player == null) return;
-		if (filechars == null || filechars.length <= 0 || !MyInvUtils.switchtoitem(Items.WRITABLE_BOOK, true, true, this)) {
+
+		if (mc.player == null)
+			return;
+		if (filechars == null || filechars.length <= 0
+				|| !MyInvUtils.switchtoitem(Items.WRITABLE_BOOK, true, true, this)) {
 			toggle();
 			return;
 		}
@@ -193,63 +186,72 @@ public class BetterBookBot extends Module {
 			return;
 		}
 		// Reset delay
-		if (TickRate.INSTANCE.getTimeSinceLastTick() > 0.5f) return;
+		if (TickRate.INSTANCE.getTimeSinceLastTick() > 0.5f)
+			return;
 		delayTimer = delay.get();
-		
-		
+
 		// Write book
-		
-		
+
 		writeBook(filechars);
-		
-		
+
 	}
-	
+
 	private boolean check(char[] chars) {
 		return iterator >= chars.length;
 	}
-	
+
 	private void writeBook(char[] chars) {
-		if (mc.player == null) return;
+		if (mc.player == null)
+			return;
 		ArrayList<String> pages = new ArrayList<>();
-		
+
 		int booklenght = 0;
-		
+
 		if (check(chars)) {
 			toggle();
 			info("complete");
 			return;
 		}
-		
+
 		for (int pageI = 0; pageI < 100; pageI++) {
-			if (check(chars)) break;
-			if (!filltomax.get() && booklenght >= numberofcharacters.get()) break;
-			
+			if (check(chars))
+				break;
+			if (!filltomax.get() && booklenght >= numberofcharacters.get())
+				break;
+
 			StringBuilder page = new StringBuilder();
-			
+
 			for (int lineI = 0; lineI < 13; lineI++) {
-				if (check(chars)) break;
-				if (!filltomax.get() && booklenght >= numberofcharacters.get()) break;
-				
+				if (check(chars))
+					break;
+				if (!filltomax.get() && booklenght >= numberofcharacters.get())
+					break;
+
 				double lineWidth = 0;
 				StringBuilder line = new StringBuilder();
-				
+
 				while (true) {
-					if (check(chars)) break;
-					if (!filltomax.get() && booklenght >= numberofcharacters.get()) break;
-					
+					if (check(chars))
+						break;
+					if (!filltomax.get() && booklenght >= numberofcharacters.get())
+						break;
+
 					char next = chars[iterator];
 					iterator++;
 					booklenght++;
 					if (next == '\r') {
-						if (chars.length > iterator && chars[iterator] == '\n') continue;
+						if (chars.length > iterator && chars[iterator] == '\n')
+							continue;
 						break;
 					}
-					
-					if (next == '\n') break;
-					
-					double charWidth = ((TextHandlerAccessor) mc.textRenderer.getTextHandler()).getWidthRetriever().getWidth(next, Style.EMPTY);
-					if (lineWidth + charWidth > 114) break;
+
+					if (next == '\n')
+						break;
+
+					double charWidth = ((TextHandlerAccessor) mc.textRenderer.getTextHandler()).getWidthRetriever()
+							.getWidth(next, Style.EMPTY);
+					if (lineWidth + charWidth > 114)
+						break;
 					line.appendCodePoint(next);
 					lineWidth += charWidth;
 				}
@@ -257,15 +259,14 @@ public class BetterBookBot extends Module {
 			}
 			pages.add(page.toString());
 		}
-		
-		
+
 		if (check(chars)) {
 			toggle();
 			info("complete");
 		}
 
 		String title = name.get() + (count.get() ? " #" + bookCount : "");
-		
+
 		// Write data to book
 		ArrayList<RawFilteredPair<Text>> filteredpages = new ArrayList<>();
 		for (String p : pages) {
@@ -281,8 +282,7 @@ public class BetterBookBot extends Module {
 		
 		
 		bookCount++;
-		
-		
+
 		if (showiterator.get()) {
 			MutableText message = Text.literal("");
 			message.append(Text.literal("iterator: ")).append(Text.literal(String.valueOf(iterator))
@@ -303,7 +303,7 @@ public class BetterBookBot extends Module {
 			info(message);
 		}
 	}
-	
+
 	private void buildstring() {
 		if (file == null || !file.exists() || file.length() == 0) {
 			info("The bookbot file is empty! ");
@@ -311,16 +311,17 @@ public class BetterBookBot extends Module {
 			iterator = 0;
 			bookCount = 0;
 			file = null;
-			if (isActive()) toggle();
+			if (isActive())
+				toggle();
 			return;
 		}
 		try (DataInputStream reader = new DataInputStream(new FileInputStream(file))) {
-			
+
 			filechars = new String(reader.readAllBytes(), StandardCharsets.UTF_8).toCharArray();
-			
+
 			iterator = 0;
 			bookCount = 0;
-			
+
 		} catch (IOException ignored) {
 			error("Failed to read the file.");
 			filechars = null;
@@ -329,8 +330,7 @@ public class BetterBookBot extends Module {
 			file = null;
 		}
 	}
-	
-	//region nbt
+
 	@Override
 	public NbtCompound toTag() {
 		NbtCompound tag = super.toTag();
@@ -338,18 +338,17 @@ public class BetterBookBot extends Module {
 		if (file != null && file.exists()) {
 			tag.putString("file", file.getAbsolutePath());
 		}
-		
+
 		return tag;
 	}
-	
+
 	@Override
 	public Module fromTag(NbtCompound tag) {
 		if (tag.contains("file")) {
 			file = new File(tag.getString("file"));
 			buildstring();
 		}
-		
+
 		return super.fromTag(tag);
 	}
-	//endregion
 }
