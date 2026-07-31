@@ -27,6 +27,7 @@ import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WHorizontalList;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
+import meteordevelopment.meteorclient.mixin.StringSplitterAccessor;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
@@ -35,8 +36,14 @@ import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.protocol.game.ServerboundEditBookPacket;
 import net.minecraft.server.network.Filterable;
 import net.minecraft.world.item.Items;
@@ -184,7 +191,7 @@ public class BetterBookBot extends Module {
 			return;
 		if (filechars == null || filechars.length <= 0
 				|| !MyInvUtils.switchtoitem(Items.WRITABLE_BOOK, true, true, this)) {
-			toggle();
+			disable();
 			return;
 		}
 		// Check delay
@@ -215,7 +222,7 @@ public class BetterBookBot extends Module {
 		int booklenght = 0;
 
 		if (check(chars)) {
-			toggle();
+			disable();
 			info("complete");
 			return;
 		}
@@ -255,7 +262,7 @@ public class BetterBookBot extends Module {
 					if (next == '\n')
 						break;
 
-					double charWidth = ((TextHandlerAccessor) mc.textRenderer.getTextHandler()).getWidthRetriever()
+					double charWidth = ((StringSplitterAccessor) mc.font.getSplitter()).meteor$getWidthProvider()
 							.getWidth(next, Style.EMPTY);
 					if (lineWidth + charWidth > 114)
 						break;
@@ -268,16 +275,16 @@ public class BetterBookBot extends Module {
 		}
 
 		if (check(chars)) {
-			toggle();
+			disable();
 			info("complete");
 		}
 
 		String title = name.get() + (count.get() ? " #" + bookCount : "");
 
 		// Write data to book
-		ArrayList<RawFilteredPair<Text>> filteredpages = new ArrayList<>();
+		ArrayList<Filterable<Component>> filteredpages = new ArrayList<>();
 		for (String p : pages) {
-			filteredpages.add(RawFilteredPair.of(Text.of(p)));
+			filteredpages.add(Filterable.passThrough(Component.literal(p)));
 		}
 
 		if (!pages.isEmpty())
@@ -291,20 +298,20 @@ public class BetterBookBot extends Module {
 		bookCount++;
 
 		if (showiterator.get()) {
-			MutableText message = Text.literal("");
-			message.append(Text.literal("iterator: ")).append(Text.literal(String.valueOf(iterator))
+			MutableComponent message = Component.literal("");
+			message.append(Component.literal("iterator: ")).append(Component.literal(String.valueOf(iterator))
 					.setStyle(Style.EMPTY
-							.withFormatting(Formatting.UNDERLINE, Formatting.RED)
+							.applyFormats(ChatFormatting.UNDERLINE, ChatFormatting.RED)
 							.withClickEvent(
-									new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(iterator)))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))));
-			message.append(Text.literal("     "));
-			message.append(Text.literal("bookcount: ")).append(Text.literal(String.valueOf(bookCount))
+									new ClickEvent.CopyToClipboard(String.valueOf(iterator)))
+							.withHoverEvent(new HoverEvent.ShowText(Component.literal("COPY")))));
+			message.append(Component.literal("     "));
+			message.append(Component.literal("bookcount: ")).append(Component.literal(String.valueOf(bookCount))
 					.setStyle(Style.EMPTY
-							.withFormatting(Formatting.UNDERLINE, Formatting.RED)
+							.applyFormats(ChatFormatting.UNDERLINE, ChatFormatting.RED)
 							.withClickEvent(
-									new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, String.valueOf(bookCount)))
-							.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.literal("COPY")))));
+									new ClickEvent.CopyToClipboard(String.valueOf(bookCount)))
+							.withHoverEvent(new HoverEvent.ShowText(Component.literal("COPY")))));
 			info(message);
 		}
 	}
@@ -316,8 +323,7 @@ public class BetterBookBot extends Module {
 			iterator = 0;
 			bookCount = 0;
 			file = null;
-			if (isActive())
-				toggle();
+			disable();
 			return;
 		}
 		try (DataInputStream reader = new DataInputStream(new FileInputStream(file))) {
