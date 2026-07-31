@@ -4,21 +4,15 @@
   "id": "meteor-utils",
   "version": "${version}",
   "description": "adds some modules to meteor client",
-  "authors": [
-    "kkllffaa"
-  ],
+  "authors": ["kkllffaa"],
   "icon": "assets/meteor-utils/icon.png",
   "environment": "client",
   "entrypoints": {
-    "meteor": [
-      "com.kkllffaa.meteorutils.Addon"
-    ]
+    "meteor": ["com.kkllffaa.meteorutils.Addon"]
   },
-  "mixins": [
-    "meteor-utils.mixins.json"
-  ],
+  "mixins": ["meteor-utils.mixins.json"],
   "depends": {
-    "java": ">=21",
+    "java": ">=25",
     "minecraft": ">=${mc_version}",
     "meteor-client": "*"
   }

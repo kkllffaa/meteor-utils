@@ -1,0 +1,46 @@
+name: Release Build
+
+on: workflow_dispatch
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: 25
+          distribution: temurin
+
+      - name: Build
+        run: |
+          chmod +x ./gradlew
+          ./gradlew build
+
+      - name: Get Versions and Changelog
+        run: |
+          MC_VERSION=$(./gradlew -q printMCVersion)
+          PROJECT_VERSION=$(./gradlew -q printVersion)
+
+          echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
+          echo "PROJECT_VERSION=$PROJECT_VERSION" >> $GITHUB_ENV
+
+          chmod +x ./changelog.sh
+          ./changelog.sh > changelog.txt
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "Version ${{ env.PROJECT_VERSION }} for Minecraft ${{ env.MC_VERSION }}"
+          tag_name: "${{ env.PROJECT_VERSION }}-${{ env.MC_VERSION }}"
+          body_path: changelog.txt
+          files: build/libs/*.jar
+          make_latest: true
