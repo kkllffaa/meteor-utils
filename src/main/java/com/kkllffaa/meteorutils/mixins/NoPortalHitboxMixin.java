@@ -2,13 +2,14 @@ package com.kkllffaa.meteorutils.mixins;
 
 import com.kkllffaa.meteorutils.modules.NoPortalHitbox;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.NetherPortalBlock;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.NetherPortalBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -16,12 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(NetherPortalBlock.class)
 public abstract class NoPortalHitboxMixin {
-	@Inject(method = "getOutlineShape",at = @At("HEAD"), cancellable = true)
-	private void getshape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir){
+
+	@Inject(method = "getShape", at = @At("HEAD"), cancellable = true)
+	private void getshape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context,
+			CallbackInfoReturnable<VoxelShape> cir) {
 		Modules modules = Modules.get();
-		if (modules == null) return;
-		if (Modules.get().isActive(NoPortalHitbox.class)){
-			cir.setReturnValue(VoxelShapes.empty());
+		if (modules == null)
+			return;
+		if (Modules.get().isActive(NoPortalHitbox.class)) {
+			cir.setReturnValue(Shapes.empty());
 		}
 	}
 }

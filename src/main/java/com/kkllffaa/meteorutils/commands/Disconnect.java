@@ -2,28 +2,25 @@ package com.kkllffaa.meteorutils.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
-import net.minecraft.command.CommandSource;
-import net.minecraft.network.packet.s2c.common.DisconnectS2CPacket;
-import net.minecraft.text.Text;
-
-import static com.mojang.brigadier.Command.SINGLE_SUCCESS;
-import static meteordevelopment.meteorclient.MeteorClient.mc;
+import net.minecraft.client.multiplayer.ClientSuggestionProvider;
+import net.minecraft.network.DisconnectionDetails;
+import net.minecraft.network.chat.Component;
 
 public class Disconnect extends Command {
- 
+
 	public Disconnect() {
 		super("disconnect", "diconnect and reconnect to actual server");
 	}
-	
+
 	@Override
-	public void build(LiteralArgumentBuilder<CommandSource> builder) {
+	public void build(LiteralArgumentBuilder<ClientSuggestionProvider> builder) {
 		builder.executes(context -> {
-			
-			
+
 			if (mc.player != null) {
-				mc.player.networkHandler.onDisconnect(new DisconnectS2CPacket(Text.literal("Disconnected via command")));
+				mc.player.connection
+						.onDisconnect(new DisconnectionDetails(Component.literal("Disconnected via command")));
 			}
-			
+
 			return SINGLE_SUCCESS;
 		});
 	}
