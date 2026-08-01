@@ -31,7 +31,8 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 @Mixin(EChestMemory.class) // in mixin because GameJoinedEvent dont fire on modules
 public abstract class EchestMemoryMixin {
 
-	@Shadow @Final
+	@Shadow
+	@Final
 	public static NonNullList<ItemStack> ITEMS;
 
 	private static File getSaveFile() {

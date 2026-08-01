@@ -37,6 +37,18 @@ processResources {
 	}
 }
 
+spotless {
+	java {
+		target "src/**/*.java"
+
+		eclipse().configFile("eclipse-formatter.xml")
+
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+	}
+}
+
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
 }
